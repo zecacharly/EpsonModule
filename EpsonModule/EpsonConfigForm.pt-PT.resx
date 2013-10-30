@@ -1,0 +1,735 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="__propertyGridEpson.Size" type="System.Drawing.Size, System.Drawing">
+    <value>470, 767</value>
+  </data>
+  <data name="tabPage1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>476, 773</value>
+  </data>
+  <data name="tabPage1.Text" xml:space="preserve">
+    <value>Configurações Gerais</value>
+  </data>
+  <data name="checkBox4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>184, 100</value>
+  </data>
+  <data name="checkBox3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>150, 100</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="__checkY.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="__checkY.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="__checkY.Location" type="System.Drawing.Point, System.Drawing">
+    <value>118, 100</value>
+  </data>
+  <data name="__checkY.Size" type="System.Drawing.Size, System.Drawing">
+    <value>33, 17</value>
+  </data>
+  <data name="_checkx.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="_checkx.Location" type="System.Drawing.Point, System.Drawing">
+    <value>87, 100</value>
+  </data>
+  <data name="_checkx.Size" type="System.Drawing.Size, System.Drawing">
+    <value>33, 17</value>
+  </data>
+  <data name="__checkFreeJoint4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>334, 19</value>
+  </data>
+  <data name="__checkFreeJoint4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 17</value>
+  </data>
+  <data name="__checkFreeJoint4.Text" xml:space="preserve">
+    <value>Libertar motor 4</value>
+  </data>
+  <data name="__checkFreeJoint3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>230, 19</value>
+  </data>
+  <data name="__checkFreeJoint3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 17</value>
+  </data>
+  <data name="__checkFreeJoint3.Text" xml:space="preserve">
+    <value>Libertar motor 3</value>
+  </data>
+  <data name="__checkFreeall.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="__checkFreeall.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="__checkFreeall.Size" type="System.Drawing.Size, System.Drawing">
+    <value>130, 17</value>
+  </data>
+  <data name="__checkFreeall.Text" xml:space="preserve">
+    <value>Libertar todos motores</value>
+  </data>
+  <data name="__checkFreeJoint1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>132, 154</value>
+  </data>
+  <data name="__checkFreeJoint1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 17</value>
+  </data>
+  <data name="__checkFreeJoint1.Text" xml:space="preserve">
+    <value>Libertar motor 1</value>
+  </data>
+  <data name="__checkFreeJoint2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>126, 59</value>
+  </data>
+  <data name="__checkFreeJoint2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 17</value>
+  </data>
+  <data name="__checkFreeJoint2.Text" xml:space="preserve">
+    <value>Libertar Motor 2</value>
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>63, 13</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>Incremento:</value>
+  </data>
+  <data name="__btudown.Location" type="System.Drawing.Point, System.Drawing">
+    <value>354, 154</value>
+  </data>
+  <data name="__btzdown.Location" type="System.Drawing.Point, System.Drawing">
+    <value>254, 154</value>
+  </data>
+  <data name="__checkContinuous.Size" type="System.Drawing.Size, System.Drawing">
+    <value>68, 17</value>
+  </data>
+  <data name="__checkContinuous.Text" xml:space="preserve">
+    <value>Continuo</value>
+  </data>
+  <data name="__btuup.Location" type="System.Drawing.Point, System.Drawing">
+    <value>355, 40</value>
+  </data>
+  <data name="__btzup.Location" type="System.Drawing.Point, System.Drawing">
+    <value>255, 40</value>
+  </data>
+  <data name="groupBox2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1, 128</value>
+  </data>
+  <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>429, 239</value>
+  </data>
+  <data name="__btUpdatSpeeds.Location" type="System.Drawing.Point, System.Drawing">
+    <value>227, 56</value>
+  </data>
+  <data name="__btUpdatSpeeds.Size" type="System.Drawing.Size, System.Drawing">
+    <value>213, 38</value>
+  </data>
+  <data name="__btUpdatSpeeds.Text" xml:space="preserve">
+    <value>Actualizar</value>
+  </data>
+  <data name="__numericUpDownAccel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>378, 22</value>
+  </data>
+  <data name="__numericUpDownAccel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>35, 20</value>
+  </data>
+  <data name="__numericUpDownSpeed.Location" type="System.Drawing.Point, System.Drawing">
+    <value>283, 22</value>
+  </data>
+  <data name="__numericUpDownSpeed.Size" type="System.Drawing.Size, System.Drawing">
+    <value>34, 20</value>
+  </data>
+  <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>317, 24</value>
+  </data>
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>64, 13</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>Acelaração:</value>
+  </data>
+  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>222, 26</value>
+  </data>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>60, 13</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Velocidade</value>
+  </data>
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>98, 13</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>Pontos disponiveis:</value>
+  </data>
+  <data name="__btSavePos.Location" type="System.Drawing.Point, System.Drawing">
+    <value>87, 53</value>
+  </data>
+  <data name="__btSavePos.Size" type="System.Drawing.Size, System.Drawing">
+    <value>131, 41</value>
+  </data>
+  <data name="__btSavePos.Text" xml:space="preserve">
+    <value>Salvar posição actual</value>
+  </data>
+  <data name="__btJumpTo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>73, 69</value>
+  </data>
+  <data name="__btJumpTo.Text" xml:space="preserve">
+    <value>Saltar para posição</value>
+  </data>
+  <data name="__PointsList.Location" type="System.Drawing.Point, System.Drawing">
+    <value>110, 26</value>
+  </data>
+  <data name="__PointsList.Size" type="System.Drawing.Size, System.Drawing">
+    <value>108, 21</value>
+  </data>
+  <data name="__groupJogging.Size" type="System.Drawing.Size, System.Drawing">
+    <value>443, 460</value>
+  </data>
+  <data name="tabPage2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>449, 466</value>
+  </data>
+  <data name="__btCloseRing.Text" xml:space="preserve">
+    <value>Fechar</value>
+  </data>
+  <data name="__btDownRing.Text" xml:space="preserve">
+    <value>Descer</value>
+  </data>
+  <data name="__btUpRing.Text" xml:space="preserve">
+    <value>Subir</value>
+  </data>
+  <data name="__btOpenRing.Text" xml:space="preserve">
+    <value>Abrir</value>
+  </data>
+  <data name="groupBox5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>249, 107</value>
+  </data>
+  <data name="__btCloseGear.Text" xml:space="preserve">
+    <value>Fechar</value>
+  </data>
+  <data name="__btOpenGear.Text" xml:space="preserve">
+    <value>Abrir</value>
+  </data>
+  <data name="groupBox3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 6</value>
+  </data>
+  <data name="groupBox3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>427, 138</value>
+  </data>
+  <data name="groupBox3.Text" xml:space="preserve">
+    <value>Ferramenta</value>
+  </data>
+  <data name="__btblowsideoff.Text" xml:space="preserve">
+    <value>Lateral Desligado</value>
+  </data>
+  <data name="__btblowfrontoff.Text" xml:space="preserve">
+    <value>Frente Desligado</value>
+  </data>
+  <data name="__btblowsideon.Text" xml:space="preserve">
+    <value>Lateral Ligado</value>
+  </data>
+  <data name="__btblowfronton.Text" xml:space="preserve">
+    <value>Frente Ligado</value>
+  </data>
+  <data name="groupBox9.Location" type="System.Drawing.Point, System.Drawing">
+    <value>224, 19</value>
+  </data>
+  <data name="groupBox9.Text" xml:space="preserve">
+    <value>Sopro</value>
+  </data>
+  <data name="__btgearunlock.Size" type="System.Drawing.Size, System.Drawing">
+    <value>96, 35</value>
+  </data>
+  <data name="__btgearunlock.Text" xml:space="preserve">
+    <value>Desbloquear</value>
+  </data>
+  <data name="__btgearlock.Size" type="System.Drawing.Size, System.Drawing">
+    <value>96, 35</value>
+  </data>
+  <data name="__btgearlock.Text" xml:space="preserve">
+    <value>Bloquear</value>
+  </data>
+  <data name="groupBox7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>117, 19</value>
+  </data>
+  <data name="groupBox7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>107, 107</value>
+  </data>
+  <data name="__btfeedstop.Size" type="System.Drawing.Size, System.Drawing">
+    <value>87, 35</value>
+  </data>
+  <data name="__btfeedstop.Text" xml:space="preserve">
+    <value>Parar</value>
+  </data>
+  <data name="__btfeedstart.Size" type="System.Drawing.Size, System.Drawing">
+    <value>87, 35</value>
+  </data>
+  <data name="__btfeedstart.Text" xml:space="preserve">
+    <value>Iniciar</value>
+  </data>
+  <data name="groupBox8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>101, 107</value>
+  </data>
+  <data name="groupBox8.Text" xml:space="preserve">
+    <value>Funcionamento</value>
+  </data>
+  <data name="groupBox6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 150</value>
+  </data>
+  <data name="groupBox6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>427, 132</value>
+  </data>
+  <data name="groupBox6.Text" xml:space="preserve">
+    <value>Sistema de alimentação</value>
+  </data>
+  <data name="__btBypassOff.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="__btBypassOff.Size" type="System.Drawing.Size, System.Drawing">
+    <value>67, 35</value>
+  </data>
+  <data name="__btBypassOff.Text" xml:space="preserve">
+    <value>Bypass Off</value>
+  </data>
+  <data name="__btBypassOn.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="__btBypassOn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>67, 35</value>
+  </data>
+  <data name="__btBypassOn.Text" xml:space="preserve">
+    <value>Bypass On</value>
+  </data>
+  <data name="__groupporta.Size" type="System.Drawing.Size, System.Drawing">
+    <value>83, 107</value>
+  </data>
+  <data name="__groupporta.Text" xml:space="preserve">
+    <value>Porta</value>
+  </data>
+  <data name="groupBox13.Size" type="System.Drawing.Size, System.Drawing">
+    <value>191, 132</value>
+  </data>
+  <data name="groupBox13.Text" xml:space="preserve">
+    <value>Segurança</value>
+  </data>
+  <data name="__btLightRingsOff.Text" xml:space="preserve">
+    <value>Desligar</value>
+  </data>
+  <data name="__btLightRingsOn.Text" xml:space="preserve">
+    <value>Ligar</value>
+  </data>
+  <data name="groupBox12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>226, 132</value>
+  </data>
+  <data name="groupBox12.Text" xml:space="preserve">
+    <value>Visão</value>
+  </data>
+  <data name="tabPage3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>449, 466</value>
+  </data>
+  <data name="tabControl2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 272</value>
+  </data>
+  <data name="tabControl2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>457, 492</value>
+  </data>
+  <data name="groupBox10.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="__btgotopallete.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="__btgotopallete.Size" type="System.Drawing.Size, System.Drawing">
+    <value>90, 44</value>
+  </data>
+  <data name="__btgotopallete.Text" xml:space="preserve">
+    <value>Ir</value>
+  </data>
+  <data name="label9.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label9.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label9.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 39</value>
+  </data>
+  <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 13</value>
+  </data>
+  <data name="label9.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="label9.Text" xml:space="preserve">
+    <value>Coluna</value>
+  </data>
+  <data name="__goCol.Size" type="System.Drawing.Size, System.Drawing">
+    <value>47, 21</value>
+  </data>
+  <data name="label11.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label11.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
+    <value>33, 13</value>
+  </data>
+  <data name="label11.Text" xml:space="preserve">
+    <value>Linha</value>
+  </data>
+  <data name="__goLine.Size" type="System.Drawing.Size, System.Drawing">
+    <value>47, 21</value>
+  </data>
+  <data name="groupBox11.Size" type="System.Drawing.Size, System.Drawing">
+    <value>307, 62</value>
+  </data>
+  <data name="groupBox11.Text" xml:space="preserve">
+    <value>Ir para:</value>
+  </data>
+  <data name="__btsetPallete.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="__btsetPallete.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 90</value>
+  </data>
+  <data name="__btsetPallete.Size" type="System.Drawing.Size, System.Drawing">
+    <value>106, 39</value>
+  </data>
+  <data name="__btsetPallete.Text" xml:space="preserve">
+    <value>Actualizar</value>
+  </data>
+  <data name="pallete_collb.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="pallete_collb.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="pallete_collb.Size" type="System.Drawing.Size, System.Drawing">
+    <value>45, 13</value>
+  </data>
+  <data name="pallete_collb.Text" xml:space="preserve">
+    <value>Colunas</value>
+  </data>
+  <data name="__pallete_col.Location" type="System.Drawing.Point, System.Drawing">
+    <value>65, 63</value>
+  </data>
+  <data name="__pallete_col.Size" type="System.Drawing.Size, System.Drawing">
+    <value>47, 21</value>
+  </data>
+  <data name="__pallete_col.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="label10.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label10.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
+    <value>38, 13</value>
+  </data>
+  <data name="label10.Text" xml:space="preserve">
+    <value>Linhas</value>
+  </data>
+  <data name="__pallete_lines.Size" type="System.Drawing.Size, System.Drawing">
+    <value>47, 21</value>
+  </data>
+  <data name="label12.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label12.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>50, 13</value>
+  </data>
+  <data name="label12.Text" xml:space="preserve">
+    <value>Ponto 4 :</value>
+  </data>
+  <data name="label8.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label8.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label8.Location" type="System.Drawing.Point, System.Drawing">
+    <value>130, 15</value>
+  </data>
+  <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>50, 13</value>
+  </data>
+  <data name="label8.Text" xml:space="preserve">
+    <value>Ponto 3 :</value>
+  </data>
+  <data name="__palletept4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 21</value>
+  </data>
+  <data name="__palletept3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>187, 12</value>
+  </data>
+  <data name="__palletept3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 21</value>
+  </data>
+  <data name="label7.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label7.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>288, 47</value>
+  </data>
+  <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>50, 13</value>
+  </data>
+  <data name="label7.Text" xml:space="preserve">
+    <value>Ponto 2 :</value>
+  </data>
+  <data name="__palletept2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>345, 44</value>
+  </data>
+  <data name="__palletept2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 21</value>
+  </data>
+  <data name="label6.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label6.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>130, 47</value>
+  </data>
+  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>50, 13</value>
+  </data>
+  <data name="label6.Text" xml:space="preserve">
+    <value>Ponto 1 :</value>
+  </data>
+  <data name="__palletept1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>187, 44</value>
+  </data>
+  <data name="__palletept1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 21</value>
+  </data>
+  <data name="label5.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label5.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>54, 13</value>
+  </data>
+  <data name="label5.Text" xml:space="preserve">
+    <value>Palete Nr:</value>
+  </data>
+  <data name="__palletenr.Size" type="System.Drawing.Size, System.Drawing">
+    <value>47, 21</value>
+  </data>
+  <data name="groupBox10.Size" type="System.Drawing.Size, System.Drawing">
+    <value>466, 135</value>
+  </data>
+  <data name="groupBox10.Text" xml:space="preserve">
+    <value>Configuração de paletização</value>
+  </data>
+  <data name="groupBox1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="__progressStepStatus.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="__progressStepStatus.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Palatino Linotype, 15.75pt</value>
+  </data>
+  <data name="__progressStepStatus.Location" type="System.Drawing.Point, System.Drawing">
+    <value>179, 9</value>
+  </data>
+  <data name="__progressStepStatus.Size" type="System.Drawing.Size, System.Drawing">
+    <value>281, 54</value>
+  </data>
+  <data name="__nextStep.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="__nextStep.Size" type="System.Drawing.Size, System.Drawing">
+    <value>84, 41</value>
+  </data>
+  <data name="__nextStep.Text" xml:space="preserve">
+    <value>Próximo passo</value>
+  </data>
+  <data name="__stepmode.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="__stepmode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 32</value>
+  </data>
+  <data name="__stepmode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>77, 17</value>
+  </data>
+  <data name="__stepmode.Text" xml:space="preserve">
+    <value>Step mode</value>
+  </data>
+  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>466, 69</value>
+  </data>
+  <data name="__btmaintenance.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="__btmaintenance.Size" type="System.Drawing.Size, System.Drawing">
+    <value>466, 45</value>
+  </data>
+  <data name="__btmaintenance.Text" xml:space="preserve">
+    <value>Iniciar modo de manutenção</value>
+  </data>
+  <data name="__panelRb.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="__panelRb.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="__panelRb.Size" type="System.Drawing.Size, System.Drawing">
+    <value>470, 767</value>
+  </data>
+  <data name="__tabRobot.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="__tabRobot.Size" type="System.Drawing.Size, System.Drawing">
+    <value>476, 773</value>
+  </data>
+  <data name="tabControl1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>484, 799</value>
+  </data>
+  <data name="tableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>490, 805</value>
+  </data>
+  <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>490, 805</value>
+  </data>
+  <data name="$this.AutoScrollMinSize" type="System.Drawing.Size, System.Drawing">
+    <value>476, 800</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>490, 805</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Configurações</value>
+  </data>
+</root>

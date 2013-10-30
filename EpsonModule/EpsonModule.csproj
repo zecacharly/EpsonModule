@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A150FCBA-35C2-41A0-B534-E83D89DB4212}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EpsonModule</RootNamespace>
+    <AssemblyName>EpsonModule</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ExtendedDotNET.Controls">
+      <HintPath>..\..\_External\ExtendedDotNET.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="IOModule">
+      <HintPath>..\..\IOModule\bin\Debug\IOModule.dll</HintPath>
+    </Reference>
+    <Reference Include="KPP Core">
+      <HintPath>..\..\_External\KPP Core\KPP Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WeifenLuo.WinFormsUI.Docking">
+      <HintPath>..\..\_External\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="EpsonConfigForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EpsonConfigForm.designer.cs">
+      <DependentUpon>EpsonConfigForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EpsonForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EpsonForm.designer.cs">
+      <DependentUpon>EpsonForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EpsonStatusForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EpsonStatusForm.designer.cs">
+      <DependentUpon>EpsonStatusForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Epson.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="WaitBlister.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WaitBlister.designer.cs">
+      <DependentUpon>WaitBlister.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="EpsonConfigForm.pt-PT.resx">
+      <DependentUpon>EpsonConfigForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EpsonConfigForm.resx">
+      <DependentUpon>EpsonConfigForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EpsonForm.pt-PT.resx">
+      <DependentUpon>EpsonForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EpsonForm.resx">
+      <DependentUpon>EpsonForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EpsonStatusForm.pt-PT.resx">
+      <DependentUpon>EpsonStatusForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EpsonStatusForm.resx">
+      <DependentUpon>EpsonStatusForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="WaitBlister.pt-PT.resx">
+      <DependentUpon>WaitBlister.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WaitBlister.resx">
+      <DependentUpon>WaitBlister.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\1379595514_navigate-right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\1379595753_navigate-left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\1379595762_navigate-down.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\1379595792_navigate-up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\1379598142_undo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\1379598145_go-into.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
