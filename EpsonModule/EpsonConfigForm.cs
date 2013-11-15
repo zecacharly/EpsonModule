@@ -11,6 +11,7 @@ using System.Threading;
 using System.Globalization;
 using KPP.Core.Debug;
 using System.Runtime.InteropServices;
+using KPPAutomationCore;
 
 namespace EpsonModule {
     public partial class EpsonConfigForm : DockContent {
@@ -18,9 +19,9 @@ namespace EpsonModule {
 
         private static KPPLogger log = new KPPLogger(typeof(EpsonConfigForm));
 
-        private EpsonModule m_epson = null;
+        private EpsonProject m_epson = null;
 
-        public EpsonModule Epson {
+        public EpsonProject Epson {
             get { return m_epson; }
             set {
                 if (value!=m_epson) {
@@ -29,7 +30,7 @@ namespace EpsonModule {
                     
 
                     if (m_epson!=null) {
-                        m_epson.OnEpsonStatusChanged += new EpsonModule.EpsonStatusChanged(m_epsonmodule_OnEpsonStatusChanged);
+                        m_epson.OnEpsonStatusChanged += new EpsonProject.EpsonStatusChanged(m_epsonmodule_OnEpsonStatusChanged);
                     }
                 }
             }
@@ -58,7 +59,7 @@ namespace EpsonModule {
         }
 
         public EpsonConfigForm() {
-            switch (EpsonModule.Language) {
+            switch (EpsonProject.Language) {
                 case LanguageName.Unk:
                     break;
                 case LanguageName.PT:

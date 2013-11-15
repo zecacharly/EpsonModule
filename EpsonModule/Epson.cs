@@ -9,56 +9,15 @@ using System.Resources;
 using System.Threading;
 using KPP.Core.Debug;
 using System.IO;
+using KPPAutomationCore;
 
 namespace EpsonModule {
 
+    public delegate void SelectedProjectChanged(EpsonProject ProjectSelected);
 
     public enum LanguageName { Unk, PT, EN }
+   
 
-
-    public enum Acesslevel { Admin, User, NotSet, Man }
-
-
-    public static class StaticObjects {
-
-        public delegate void AcesslevelChanged(Acesslevel NewLevel);
-        public static event AcesslevelChanged OnAcesslevelChanged;
-
-
-
-
-        private static Acesslevel _acessLevel = Acesslevel.NotSet;
-
-        public static Acesslevel AcessLevel {
-            get { return _acessLevel; }
-            set {
-                if (_acessLevel != value) {
-                    _acessLevel = value;
-                    if (OnAcesslevelChanged != null) {
-                        OnAcesslevelChanged(value);
-                    }
-                }
-            }
-        }
-
-
-        public static string GetResourceText(this Object from, String ResVar) {
-            return GetResourceText(from, "OpenVisionSystem.Resources.Language.Res", ResVar);
-        }
-
-        public static string GetResourceText(this Object from, String ResLocation, String ResVar) {
-            try {
-                //ComponentResourceManager resources = new ComponentResourceManager(Program.);
-                ResourceManager res_man = new ResourceManager(ResLocation, from.GetType().Assembly);
-                return res_man.GetString(ResVar, Thread.CurrentThread.CurrentUICulture);
-            }
-            catch (Exception exp) {
-
-                return "Error getting resource";
-            }
-        }
-
-    }
 
     public enum EpsonStatus { Stopped, Started, Maintenance }
 
@@ -148,38 +107,11 @@ namespace EpsonModule {
         }
     }
 
-    public class EpsonModule {
 
-        private String _Name = "Epson Module";
-        [XmlAttribute, ReadOnly(true)]
-        public String Name {
-            get { return _Name; }
-            set { _Name = value; }
-        }
 
-        private TCPServer _EpsonServer = new TCPServer();
-        [TypeConverter(typeof(ExpandableObjectConverter))]
-        [DisplayName("TCP Server")]
-        public TCPServer EpsonServer {
-            get { return _EpsonServer; }
-            set {
-                if (_EpsonServer != value) {
-                    _EpsonServer = value;
-                }
-            }
-        }
+    public class EpsonProject:ModuleProject {
 
-        private TCPServer _EpsonAndroidServer = new TCPServer();
-        [TypeConverter(typeof(ExpandableObjectConverter))]
-        [DisplayName("TCP Android Server")]
-        public TCPServer EpsonAndroidServer {
-            get { return _EpsonAndroidServer; }
-            set {
-                if (_EpsonAndroidServer != value) {
-                    _EpsonAndroidServer = value;
-                }
-            }
-        }
+        
 
         private PalleteDefinition m_Pallete = new PalleteDefinition();
         [Browsable(false)]
@@ -189,8 +121,7 @@ namespace EpsonModule {
         }
 
         public void Dispose() {
-            EpsonServer.StopListening();
-            EpsonAndroidServer.StopListening();
+           
         }
 
         public override string ToString() {
@@ -242,20 +173,20 @@ namespace EpsonModule {
         }
         
 
-        public EpsonModule() {
-
+        public EpsonProject() {
+            Name = "Epson Project";
         }
     }
 
 
-    public sealed class EpsonModuleSettings {
+    public sealed class EpsonProjects {
 
         #region -  Serialization attributes  -
 
-        public static Int32 S_BackupFilesToKeep = 5;
-        public static String S_BackupFolderName = "backup";
-        public static String S_BackupExtention = "bkp";
-        public static String S_DefaulFileExtention = "xml";
+        internal static Int32 S_BackupFilesToKeep = 5;
+        internal static String S_BackupFolderName = "backup";
+        internal static String S_BackupExtention = "bkp";
+        internal static String S_DefaulFileExtention = "xml";
 
         private String _filePath = null;
         private String _defaultPath = null;
@@ -268,26 +199,232 @@ namespace EpsonModule {
         public String BackupExtention { get; set; }
 
         #endregion
-        private static KPPLogger log = new KPPLogger(typeof(EpsonModuleSettings));
+
+        private static KPPLogger log = new KPPLogger(typeof(EpsonProjects));
 
         [XmlAttribute]
         public String Name { get; set; }
 
+        public string ModuleName {
+            get;
+            set;
+        }
 
 
 
-
-        public EpsonModule Epson { get; set; }
+        public List<EpsonProject> Projects { get; set; }
 
 
 
         /// <summary>
         /// 
         /// </summary>
+        public EpsonProjects() {
+            Name = "Epson Projects";
+            Projects = new List<EpsonProject>();
+        }
+
+
+        //    StaticObjects.ListInspections.Add(item);
+
+        #region Read Operations
+
+        /// <summary>
+        /// Reads the configuration.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <returns></returns>
+        internal static EpsonProjects ReadConfigurationFile(string path) {
+            //log.Debug(String.Format("Load Xml file://{0}", path));
+            if (File.Exists(path)) {
+                EpsonProjects result = null;
+                TextReader reader = null;
+
+                try {
+                    XmlSerializer serializer = new XmlSerializer(typeof(EpsonProjects));
+                    reader = new StreamReader(path);
+
+                    UndoRedoManager.StartInvisible("Init");
+
+                    EpsonProjects config = serializer.Deserialize(reader) as EpsonProjects;
+
+                    config._filePath = path;
+
+                    result = config;
+                    UndoRedoManager.Commit();
+                } catch (Exception exp) {
+                    log.Error(exp);
+                } finally {
+                    if (reader != null) {
+                        reader.Close();
+                    }
+                }
+                return result;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Reads the configuration.
+        /// </summary>
+        /// <param name="childtype">The childtype.</param>
+        /// <param name="xmlString">The XML string.</param>
+        /// <returns></returns>
+        internal static EpsonProjects ReadConfigurationString(string xmlString) {
+            try {
+                XmlSerializer serializer = new XmlSerializer(typeof(EpsonProjects));
+                EpsonProjects config = serializer.Deserialize(new StringReader(xmlString)) as EpsonProjects;
+
+                return config;
+            } catch (Exception exp) {
+                log.Error(exp);
+            }
+            return null;
+        }
+
+        #endregion
+
+        #region Write Operations
+
+        /// <summary>
+        /// Writes the configuration.
+        /// </summary>
+        public void WriteConfigurationFile() {
+            if (_filePath != null) {
+
+                WriteConfigurationFile(_filePath);
+
+            }
+        }
+
+        /// <summary>
+        /// Writes the configuration.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        public void WriteConfigurationFile(string path) {
+
+            WriteConfiguration(this, path, BackupFolderName, BackupExtention, BackupFilesToKeep);
+
+        }
+
+        /// <summary>
+        /// Writes the configuration string.
+        /// </summary>
+        /// <returns></returns>
+        public String WriteConfigurationToString() {
+
+            return WriteConfigurationToString(this);
+        }
+
+        /// <summary>
+        /// Writes the configuration.
+        /// </summary>
+        /// <param name="config">The config.</param>
+        /// <param name="path">The path.</param>
+        internal static void WriteConfiguration(EpsonProjects config, string path) {
+            WriteConfiguration(config, path, S_BackupFolderName, S_BackupExtention, S_BackupFilesToKeep);
+        }
+
+        /// <summary>
+        /// Writes the configuration.
+        /// </summary>
+        /// <param name="config">The config.</param>
+        /// <param name="path">The path.</param>
+        internal static void WriteConfiguration(EpsonProjects config, string path, string backupFolderName, String backupExtention, Int32 backupFilesToKeep) {
+            if (File.Exists(path) && backupFilesToKeep > 0) {
+                //Do a file backup prior to overwrite
+                try {
+                    //Check if valid backup folder name
+                    if (backupFolderName == null || backupFolderName.Length == 0) {
+                        backupFolderName = "backup";
+                    }
+
+                    //Check Backup folder
+                    String bkpFolder = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "Config"), backupFolderName);
+                    if (!Directory.Exists(bkpFolder)) {
+                        Directory.CreateDirectory(bkpFolder);
+                    }
+
+                    //Check extention
+                    String ext = backupExtention != null && backupExtention.Length > 0 ? backupExtention : Path.GetExtension(path);
+                    if (!ext.StartsWith(".")) { ext = String.Format(".{0}", ext); }
+
+                    //Delete existing backup file (This should not exist)
+                    String bkpFile = Path.Combine(bkpFolder, String.Format("{0}_{1:yyyyMMddHHmmss}{2}", Path.GetFileNameWithoutExtension(path), DateTime.Now, ext));
+                    if (File.Exists(bkpFile)) { File.Delete(bkpFile); }
+
+                    //Delete excess backup files
+                    String fileSearchPattern = String.Format("{0}_*{1}", Path.GetFileNameWithoutExtension(path), ext);
+                    String[] bkpFilesList = Directory.GetFiles(bkpFolder, fileSearchPattern, SearchOption.TopDirectoryOnly);
+                    if (bkpFilesList != null && bkpFilesList.Length > (backupFilesToKeep - 1)) {
+                        bkpFilesList = bkpFilesList.OrderByDescending(f => f.ToString()).ToArray();
+                        for (int i = (backupFilesToKeep - 1); i < bkpFilesList.Length; i++) {
+                            File.Delete(bkpFilesList[i]);
+                        }
+                    }
+
+                    //Backup current file
+                    File.Copy(path, bkpFile);
+                    //log.Debug(String.Format("Backup file://{0} to file://{1}", path, bkpFile));
+                } catch (Exception exp) {
+                    //log.Error(String.Format("Error copying file {0} to backup.", path), exp);
+                }
+            }
+            try {
+
+                XmlSerializer serializer = new XmlSerializer(config.GetType());
+                TextWriter textWriter = new StreamWriter(path);
+                serializer.Serialize(textWriter, config);
+                textWriter.Close();
+
+                //log.Debug(String.Format("Write Xml file://{0}", path));
+            } catch (Exception exp) {
+                log.Error("Error writing configuration. ", exp);
+
+                Console.WriteLine(exp.ToString());
+            }
+        }
+
+        /// <summary>
+        /// Writes the configuration to string.
+        /// </summary>
+        /// <param name="config">The config.</param>
+        /// <returns></returns>
+        internal static String WriteConfigurationToString(EpsonProjects config) {
+            try {
+                XmlSerializer serializer = new XmlSerializer(config.GetType());
+                StringWriter stOut = new StringWriter();
+
+                serializer.Serialize(stOut, config);
+
+                return stOut.ToString();
+            } catch (Exception exp) {
+                //log.Error("Error writing configuration. ", exp);
+
+            }
+            return null;
+        }
+
+        #endregion
+
+
+    }
+
+
+
+    public sealed class EpsonModuleSettings:ModuleSettings {
+
+        
+        private KPPLogger log = new KPPLogger(typeof(EpsonModuleSettings));
+
+      
+        /// <summary>
+        /// 
+        /// </summary>
         public EpsonModuleSettings() {
             Name = "Epson Settings";
 
-            Epson = new EpsonModule();
+         
 
 
         }
@@ -315,7 +452,7 @@ namespace EpsonModule {
 
                     EpsonModuleSettings config = serializer.Deserialize(reader) as EpsonModuleSettings;
              
-                    config._filePath = path;
+                    config.FilePath= path;
 
                     result = config;
                    
@@ -360,9 +497,9 @@ namespace EpsonModule {
         /// Writes the configuration.
         /// </summary>
         public void WriteConfigurationFile() {
-            if (_filePath != null) {
+            if (FilePath != null) {
 
-                WriteConfigurationFile(_filePath);
+                WriteConfigurationFile(FilePath);
 
             }
         }

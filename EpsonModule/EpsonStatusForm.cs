@@ -16,10 +16,10 @@ namespace EpsonModule {
 
 
 
-        public EpsonModule epsonmodule=null;
+        public EpsonProject epsonmodule=null;
 
         public EpsonStatusForm() {
-            switch (EpsonModule.Language) {
+            switch (EpsonProject.Language) {
                 case LanguageName.Unk:
                     break;
                 case LanguageName.PT:

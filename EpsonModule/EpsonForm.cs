@@ -11,13 +11,14 @@ using System.IO;
 using KPP.Core.Debug;
 using System.Threading;
 using System.Globalization;
+using KPPAutomationCore;
 
 namespace EpsonModule {
-    public partial class EpsonMainForm : DockContent {
+    public partial class EpsonMainForm : DockContent,IModuleForm {
 
-        EpsonModule Epson = null;
-        public EpsonMainForm(EpsonModule mEpson) {
-            switch (EpsonModule.Language) {
+        EpsonProject Epson = null;
+        public EpsonMainForm() {
+            switch (EpsonProject.Language) {
                 case LanguageName.Unk:
                     break;
                 case LanguageName.PT:
@@ -36,7 +37,8 @@ namespace EpsonModule {
             _EpsonConfigForm.CloseButtonVisible = false;
             _EpsonStatusForm.CloseButtonVisible = false;
 
-            Epson = mEpson;
+
+            
 
             _EpsonConfigForm.__propertyGridEpson.SelectedObject = Epson;
             if (Epson != null) {
@@ -50,7 +52,7 @@ namespace EpsonModule {
                 Epson.EpsonAndroidServer.ServerClientMessage += new IOModule.TCPServer.TcpServerClientMessageEvent(EpsonAndroidServer_ServerClientMessage);
                 Epson.EpsonAndroidServer.StartListening();
 
-                Epson.OnEpsonStatusChanged += new EpsonModule.EpsonStatusChanged(Epson_OnEpsonStatusChanged);
+                Epson.OnEpsonStatusChanged += new EpsonProject.EpsonStatusChanged(Epson_OnEpsonStatusChanged);
                 _EpsonConfigForm.Epson = Epson;
 
             }
@@ -369,39 +371,338 @@ namespace EpsonModule {
             }
         }
 
+        public EpsonModuleSettings EpsonSettings = null;
+        public EpsonProjects EpsonProjectsConfig = null;        
 
-        public string _epsonfile { get; set; }
+        //public string _epsonfile { get; set; }
 
-        private void EpsonMainForm_Load(object sender, EventArgs e) {
-            m_deserializeDockContent = new DeserializeDockContent(GetContentFromPersistString);
+        private String ModuleName;
 
-            _epsonfile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config\\Epson.config");
+        public void InitModule(String moduleName, String epsonSettingsFile) {
+            ModuleName = moduleName;
+            log = new KPPLogger(typeof(EpsonMainForm), name: ModuleName);
+
+
+            try {
+
+
+                m_deserializeDockContent = new DeserializeDockContent(GetContentFromPersistString);
+
+             
+                Thread splashthread = new Thread(new ThreadStart(SplashScreen.ShowSplashScreen));
+                splashthread.IsBackground = true;
+                splashthread.Start();
+                //TODO splash screen
+                Thread.Sleep(100);
+                SplashScreen.UdpateStatusTextWithStatus("[" + ModuleName + "] - " + this.GetResourceText("SplashScreen_0"), TypeOfMessage.Success);
+                Thread.Sleep(100);                
+
+
+                this.Text = ModuleName;
 
 
 
-            if (File.Exists(_epsonfile))
+                if (!File.Exists(epsonSettingsFile)) {
+                    EpsonModuleSettings.WriteConfiguration(new EpsonModuleSettings(), epsonSettingsFile);
+                }
+
+                EpsonSettings = EpsonModuleSettings.ReadConfigurationFile(epsonSettingsFile);
+                EpsonSettings.BackupExtention = ".bkp";
+                EpsonSettings.BackupFilesToKeep = 5;
+                EpsonSettings.BackupFolderName = "Backup";
+
+                EpsonSettings.DockFile = Path.Combine(Path.GetDirectoryName(epsonSettingsFile), ModuleName + ".dock");
+
+                if (File.Exists(EpsonSettings.DockFile))
+                    try {
+                        __dockPanel1.LoadFromXml(EpsonSettings.DockFile, m_deserializeDockContent);
+                    } catch (Exception exp) {
+
+                        __dockPanel1.SaveAsXml(EpsonSettings.DockFile);
+
+                    } else {
+
+
+                }
+
+                if (_EpsonConfigForm.Visible == false) {
+                    _EpsonConfigForm.Show(__dockPanel1);
+                }
+                if (_EpsonStatusForm.Visible == false) {
+                    _EpsonStatusForm.Show(__dockPanel1);
+                }
+
+
+               
+
+                _EpsonStatusForm.__btNewInsp.Click += new EventHandler(__btNewInsp_Click);
+
+                #region project forms init
+
+
+
+                SplashScreen.UdpateStatusTextWithStatus("[" + ModuleName + "] - " + this.GetResourceText("SplashScreen_1"), TypeOfMessage.Success);
+
+
+                #endregion
+
+
+
+                SplashScreen.UdpateStatusTextWithStatus("[" + ModuleName + "] - " + this.GetResourceText("SplashScreen_2"), TypeOfMessage.Success);
+
+
+                SplashScreen.UdpateStatusTextWithStatus("[" + ModuleName + "] - " + this.GetResourceText("SplashScreen_3"), TypeOfMessage.Success);
+
+                LoadProjectsFromFile(EpsonSettings.ProjectFile);
+
+
+
+
+
+
+                #region Android
+                //AndroidServer = new TCPServerConnection();
+                //AndroidServer.Port = 9605;
+                //AndroidServer.StartOnLoad = false;
+                //AndroidServer.OnClientStateChanged += new TCPServerConnection.ClientStateChanged(AndroidServer_OnClientStateChanged);
+                //AndroidServer.OnClientMessage += new TCPServerConnection.ClientMessage(AndroidServer_OnClientMessage);
+                //AndroidServer.Start();
+                #endregion
+
+
+
+                AcessManagement.OnAcesslevelChanged +=new AcessManagement.AcesslevelChanged(AcessManagement_OnAcesslevelChanged);
+
+                AcessManagement_OnAcesslevelChanged(AcessManagement.AcessLevel);
+
+
+            } catch (Exception exp) {
+                log.Error(exp);
+                SplashScreen.UdpateStatusText(this.GetResourceText("SplashScreen_6"));
+                Thread.Sleep(500);
+                this.Show();
+                SplashScreen.CloseSplashScreen();
+
+            }
+        }
+
+
+
+        public void LoadProjectsFromFile(String newpath) {
+
+            String appath = AppDomain.CurrentDomain.BaseDirectory;
+
+
+            Uri fullPath = new Uri(new Uri(appath), newpath);
+
+            String thefilepath = fullPath.LocalPath;// +Path.GetFileName(newpath);
+
+            log.Status("Loading projects file : " + thefilepath);
+
+
+            if (File.Exists(thefilepath)) {
+
+
+                if (EpsonProjectsConfig != null) {
+                    CloseCurrentConfiguration(true);
+                }
+
+
+                EpsonProjectsConfig = EpsonProjects.ReadConfigurationFile(thefilepath);
+
+                EpsonProjectsConfig.BackupExtention = ".bkp";
+                EpsonProjectsConfig.BackupFilesToKeep = 5;
+                EpsonProjectsConfig.BackupFolderName = "Backup";
+
+                log.Status("Projects file loaded");
+
+                if (EpsonProjectsConfig.Projects.Count == 1) {
+                    LoadProject(EpsonProjectsConfig.Projects[0].Name);
+                }
+            } else {
+                log.Info("Projects file not found");
+            }
+        }
+
+
+        private Boolean LoadProject(String ProjectName) {
+
+            if (this.InvokeRequired) {
+                Boolean ok = false;
+                this.Invoke(new MethodInvoker(delegate {
+                    ok = LoadProject(ProjectName);
+                }));
+                return ok;
+            } else {
                 try {
-                    __dockPanel1.LoadFromXml(_epsonfile, m_deserializeDockContent);
+
+
+                    int prognumber = -1;
+                    EpsonProject newselected = null;
+
+                    if (int.TryParse(ProjectName, out prognumber)) {
+                        newselected = EpsonProjectsConfig.Projects.Find(projname => projname.ProjectID == prognumber);
+                    } else {
+                        newselected = EpsonProjectsConfig.Projects.Find(projname => projname.Name == ProjectName);
+                    }
+
+                    if (newselected != null) {
+
+                        if (((EpsonProject)(EpsonSettings.SelectedProject)) != null) {
+
+
+                            if (newselected.Name == ((EpsonProject)(EpsonSettings.SelectedProject)).Name) {
+                                return true;
+                            } else {
+                                CloseCurrentConfiguration(true);
+                            }
+
+                        }
+
+                        EpsonSettings.SelectedProject = newselected;
+
+
+                        this.Text = ModuleName + " : " + ((EpsonProject)(EpsonSettings.SelectedProject)).Name;
+
+                    }
+                    return true;
                 } catch (Exception exp) {
 
-                    __dockPanel1.SaveAsXml(_epsonfile);
-
-                } else {
-
-
+                    log.Error(exp);
+                    return false;
+                }
 
             }
-            if (_EpsonConfigForm.Visible == false && StaticObjects.AcessLevel == Acesslevel.Admin) {
-                _EpsonConfigForm.Show(__dockPanel1);
+
+
+        }
+
+
+        private void CloseCurrentConfiguration(bool overrideclose) {
+
+            try {
+
+                if (((EpsonProject)(EpsonSettings.SelectedProject)) != null) {
+
+
+
+
+                    this.Text = ModuleName;
+
+
+
+                    ((EpsonProject)(EpsonSettings.SelectedProject)).Dispose();
+
+
+                    EpsonSettings.SelectedProject = null;
+
+
+
+                }
+
+
+            } catch (Exception exp) {
+
+
+                log.Error(exp);
             }
-            if (_EpsonStatusForm.Visible == false) {
-                _EpsonStatusForm.Show(__dockPanel1);
+
+        }
+
+        void AcessManagement_OnAcesslevelChanged(Acesslevel NewLevel) {
+            Boolean state = (NewLevel == Acesslevel.Admin || NewLevel == Acesslevel.Man);
+           
+
+            switch (NewLevel) {
+                case Acesslevel.Admin:
+
+                    break;
+                case Acesslevel.Man:
+
+                    break;
+                case Acesslevel.User:
+
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
+        internal static class SplashScreen {
+            static SplashScreenForm sf = null;
+
+            static Point _WindowLocation = new Point(0, 0);
+
+            internal static Point WindowLocation {
+                get {
+                    return SplashScreen._WindowLocation;
+                }
+                set {
+
+                    SplashScreen._WindowLocation = value;
+                    if (sf != null) {
+                        sf.UpdateLocation(value);
+
+                    }
+
+
+                }
             }
 
+            /// <summary>
+            /// Displays the splashscreen
+            /// </summary>
+            internal static void ShowSplashScreen() {
+                if (sf == null) {
+                    sf = new SplashScreenForm();
+                    sf.Load += new EventHandler(sf_Load);
+                    sf.ShowSplashScreen();
 
-            StaticObjects.OnAcesslevelChanged += new StaticObjects.AcesslevelChanged(StaticObjects_OnAcesslevelChanged);
 
-            _EpsonStatusForm.__btNewInsp.Click += new EventHandler(__btNewInsp_Click);
+
+                }
+            }
+
+            static void sf_Load(object sender, EventArgs e) {
+                WindowLocation = sf.Location;
+            }
+
+            /// <summary>
+            /// Closes the SplashScreen
+            /// </summary>
+            internal static void CloseSplashScreen() {
+                if (sf != null) {
+                    sf.CloseSplashScreen();
+                    sf = null;
+                }
+            }
+
+            /// <summary>
+            /// Update text in default green color of success message
+            /// </summary>
+            /// <param name="Text">Message</param>
+            internal static void UdpateStatusText(string Text) {
+                if (sf != null)
+                    sf.UdpateStatusText(Text);
+
+            }
+
+            /// <summary>
+            /// Update text with message color defined as green/yellow/red/ for success/warning/failure
+            /// </summary>
+            /// <param name="Text">Message</param>
+            /// <param name="tom">Type of Message</param>
+            internal static void UdpateStatusTextWithStatus(string Text, TypeOfMessage tom) {
+
+                if (sf != null)
+                    sf.UdpateStatusTextWithStatus(Text, tom);
+            }
+        }
+
+
+        private void EpsonMainForm_Load(object sender, EventArgs e) {
+           
             
             
         }
