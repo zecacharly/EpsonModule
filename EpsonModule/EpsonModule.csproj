@@ -38,6 +38,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dejavu">
+      <HintPath>..\..\_External\Dejavu 1.0 Beta 1 Sources\Dejavu\bin\Debug\Dejavu.dll</HintPath>
+    </Reference>
     <Reference Include="ExtendedDotNET.Controls">
       <HintPath>..\..\_External\ExtendedDotNET.Controls.dll</HintPath>
     </Reference>
@@ -117,6 +120,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Resources\Language\Res.de.resx" />
+    <EmbeddedResource Include="Resources\Language\Res.pt-PT.resx" />
     <EmbeddedResource Include="WaitBlister.pt-PT.resx">
       <DependentUpon>WaitBlister.cs</DependentUpon>
     </EmbeddedResource>

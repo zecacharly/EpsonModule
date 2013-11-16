@@ -19,18 +19,18 @@ namespace EpsonModule {
 
         private static KPPLogger log = new KPPLogger(typeof(EpsonConfigForm));
 
-        private EpsonProject m_epson = null;
+        private EpsonProject m_SelectedProject = null;
 
-        public EpsonProject Epson {
-            get { return m_epson; }
+        public EpsonProject SelectedProject {
+            get { return m_SelectedProject; }
             set {
-                if (value!=m_epson) {
-                    m_epson = value;
+                if (value!=m_SelectedProject) {
+                    m_SelectedProject = value;
                     
                     
 
-                    if (m_epson!=null) {
-                        m_epson.OnEpsonStatusChanged += new EpsonProject.EpsonStatusChanged(m_epsonmodule_OnEpsonStatusChanged);
+                    if (m_SelectedProject!=null) {
+                        m_SelectedProject.OnEpsonStatusChanged += new EpsonProject.EpsonStatusChanged(m_epsonmodule_OnEpsonStatusChanged);
                     }
                 }
             }
@@ -59,7 +59,7 @@ namespace EpsonModule {
         }
 
         public EpsonConfigForm() {
-            switch (EpsonProject.Language) {
+            switch (LanguageSettings.Language) {
                 case LanguageName.Unk:
                     break;
                 case LanguageName.PT:
@@ -79,20 +79,20 @@ namespace EpsonModule {
         }
 
         private void __btJumpTo_Click(object sender, EventArgs e) {
-            if (Epson != null) {
+            if (SelectedProject != null) {
                 if (__PointsList.SelectedIndex>-1) {
-                    Epson.EpsonServer.Client.Write("JUMPTO|" + __PointsList.Text);
+                    SelectedProject.EpsonServer.Client.Write("JUMPTO|" + __PointsList.Text);
                 }
                 
             }
         }
 
         private void __btmaintenance_Click(object sender, EventArgs e) {
-            if (Epson.Status== EpsonStatus.Maintenance) {
+            if (SelectedProject.Status== EpsonStatus.Maintenance) {
                 __btmaintenance.Text = this.GetResourceText("OpenVisionSystem.Resources.Language.Epson", "maintenancestart");
-                Epson.EpsonServer.Client.Write("SET|MAINTENANCE|STOP");                
+                SelectedProject.EpsonServer.Client.Write("SET|MAINTENANCE|STOP");                
             } else {
-                Epson.EpsonServer.Client.Write("SET|MAINTENANCE|START");
+                SelectedProject.EpsonServer.Client.Write("SET|MAINTENANCE|START");
                 __btmaintenance.Text = this.GetResourceText("OpenVisionSystem.Resources.Language.Epson", "maintenancestop");
                 checkBox1_CheckedChanged(sender, e);
             }
@@ -100,9 +100,9 @@ namespace EpsonModule {
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e) {
             if (__stepmode.Checked) {
-                Epson.EpsonServer.Client.Write("SET|MAINTENANCE|STEPMODE|ON");
+                SelectedProject.EpsonServer.Client.Write("SET|MAINTENANCE|STEPMODE|ON");
             } else {
-                Epson.EpsonServer.Client.Write("SET|MAINTENANCE|STEPMODE|OFF");
+                SelectedProject.EpsonServer.Client.Write("SET|MAINTENANCE|STEPMODE|OFF");
             }
             
         }
@@ -128,12 +128,12 @@ namespace EpsonModule {
         private void button1_Click(object sender, EventArgs e) {
             __nextStep.Enabled = false;
             update_progressbar(__progressStepStatus, this.GetResourceText("OpenVisionSystem.Resources.Language.Epson", "dostep"), 0, Color.DarkSeaGreen);
-            Epson.EpsonServer.Client.Write("SET|NEXTSTEP");
+            SelectedProject.EpsonServer.Client.Write("SET|NEXTSTEP");
         }
 
         private void __btUpdatSpeeds_Click(object sender, EventArgs e) {
-            Epson.EpsonServer.Client.Write("SET|SPEED|"+__numericUpDownSpeed.Value.ToString());
-            Epson.EpsonServer.Client.Write("SET|ACCEL|" + __numericUpDownAccel.Value.ToString());
+            SelectedProject.EpsonServer.Client.Write("SET|SPEED|"+__numericUpDownSpeed.Value.ToString());
+            SelectedProject.EpsonServer.Client.Write("SET|ACCEL|" + __numericUpDownAccel.Value.ToString());
         }
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
@@ -148,35 +148,35 @@ namespace EpsonModule {
        
 
         private void __btyup_Click(object sender, EventArgs e) {
-            Epson.EpsonServer.Client.Write("JOG|Y|" + __numericUpDownIncrement.Value.ToString().Replace(",", "."));
+            SelectedProject.EpsonServer.Client.Write("JOG|Y|" + __numericUpDownIncrement.Value.ToString().Replace(",", "."));
         }
 
         private void __btydown_Click(object sender, EventArgs e) {
-            Epson.EpsonServer.Client.Write("JOG|Y|-" + __numericUpDownIncrement.Value.ToString().Replace(",","."));
+            SelectedProject.EpsonServer.Client.Write("JOG|Y|-" + __numericUpDownIncrement.Value.ToString().Replace(",","."));
         }
 
         private void __btxup_Click(object sender, EventArgs e) {
-            Epson.EpsonServer.Client.Write("JOG|X|" + __numericUpDownIncrement.Value.ToString().Replace(",","."));
+            SelectedProject.EpsonServer.Client.Write("JOG|X|" + __numericUpDownIncrement.Value.ToString().Replace(",","."));
         }
 
         private void __btxdown_Click(object sender, EventArgs e) {
-            Epson.EpsonServer.Client.Write("JOG|X|-" + __numericUpDownIncrement.Value.ToString().Replace(",","."));
+            SelectedProject.EpsonServer.Client.Write("JOG|X|-" + __numericUpDownIncrement.Value.ToString().Replace(",","."));
         }
 
         private void __btzup_Click(object sender, EventArgs e) {
-            Epson.EpsonServer.Client.Write("JOG|Z|" + __numericUpDownIncrement.Value.ToString().Replace(",","."));
+            SelectedProject.EpsonServer.Client.Write("JOG|Z|" + __numericUpDownIncrement.Value.ToString().Replace(",","."));
         }
 
         private void __btzdown_Click(object sender, EventArgs e) {
-            Epson.EpsonServer.Client.Write("JOG|Z|-" + __numericUpDownIncrement.Value.ToString().Replace(",","."));
+            SelectedProject.EpsonServer.Client.Write("JOG|Z|-" + __numericUpDownIncrement.Value.ToString().Replace(",","."));
         }
 
         private void __btuup_Click(object sender, EventArgs e) {
-            Epson.EpsonServer.Client.Write("JOG|U|" + __numericUpDownIncrement.Value.ToString().Replace(",","."));
+            SelectedProject.EpsonServer.Client.Write("JOG|U|" + __numericUpDownIncrement.Value.ToString().Replace(",","."));
         }
 
         private void __btudown_Click(object sender, EventArgs e) {
-            Epson.EpsonServer.Client.Write("JOG|U|-" + __numericUpDownIncrement.Value.ToString().Replace(",","."));
+            SelectedProject.EpsonServer.Client.Write("JOG|U|-" + __numericUpDownIncrement.Value.ToString().Replace(",","."));
         }
 
       //  ScrollBar vScrollBar1;
@@ -211,96 +211,96 @@ namespace EpsonModule {
                 //if (!) {
                     
                 //}
-                Epson.EpsonServer.Client.Write("SAVECURREPOS|" + __PointsList.Text);
+                SelectedProject.EpsonServer.Client.Write("SAVECURREPOS|" + __PointsList.Text);
             }
             
         }
 
         private void __btOpenGear_Click(object sender, EventArgs e) {
-            Epson.EpsonServer.Client.Write("SET|TOOL|GEAR|OPEN");
+            SelectedProject.EpsonServer.Client.Write("SET|TOOL|GEAR|OPEN");
         }
 
         private void __btCloseGear_Click(object sender, EventArgs e) {
-            Epson.EpsonServer.Client.Write("SET|TOOL|GEAR|CLOSE");
+            SelectedProject.EpsonServer.Client.Write("SET|TOOL|GEAR|CLOSE");
         }
 
         private void __btOpenRing_Click(object sender, EventArgs e) {
-            Epson.EpsonServer.Client.Write("SET|TOOL|RING|OPEN");
+            SelectedProject.EpsonServer.Client.Write("SET|TOOL|RING|OPEN");
         }
 
         private void __btCloseRing_Click(object sender, EventArgs e) {
-            Epson.EpsonServer.Client.Write("SET|TOOL|RING|CLOSE");
+            SelectedProject.EpsonServer.Client.Write("SET|TOOL|RING|CLOSE");
         }
 
         private void __btUpRing_Click(object sender, EventArgs e) {
-            Epson.EpsonServer.Client.Write("SET|TOOL|RING|UP");
+            SelectedProject.EpsonServer.Client.Write("SET|TOOL|RING|UP");
         }
 
         private void __btDownRing_Click(object sender, EventArgs e) {
-            Epson.EpsonServer.Client.Write("SET|TOOL|RING|DOWN");
+            SelectedProject.EpsonServer.Client.Write("SET|TOOL|RING|DOWN");
         }
 
         private void __btfeedstart_Click(object sender, EventArgs e) {
-            Epson.EpsonServer.Client.Write("SET|FEED|START");
+            SelectedProject.EpsonServer.Client.Write("SET|FEED|START");
         }
 
         private void __btfeedstop_Click(object sender, EventArgs e) {
-            Epson.EpsonServer.Client.Write("SET|FEED|STOP");
+            SelectedProject.EpsonServer.Client.Write("SET|FEED|STOP");
         }
 
         private void __btgearlock_Click(object sender, EventArgs e) {
-            Epson.EpsonServer.Client.Write("SET|FEED|LOCK");
+            SelectedProject.EpsonServer.Client.Write("SET|FEED|LOCK");
         }
 
         private void __btgearunlock_Click(object sender, EventArgs e) {
-            Epson.EpsonServer.Client.Write("SET|FEED|UNLOCK");
+            SelectedProject.EpsonServer.Client.Write("SET|FEED|UNLOCK");
         }
 
         private void __btblowfronton_Click(object sender, EventArgs e) {
-            Epson.EpsonServer.Client.Write("SET|FEED|AIRFRONT|ON");
+            SelectedProject.EpsonServer.Client.Write("SET|FEED|AIRFRONT|ON");
         }
 
         private void __btblowfrontoff_Click(object sender, EventArgs e) {
-            Epson.EpsonServer.Client.Write("SET|FEED|AIRFRONT|OFF");
+            SelectedProject.EpsonServer.Client.Write("SET|FEED|AIRFRONT|OFF");
         }
 
         private void __btblowsideon_Click(object sender, EventArgs e) {
-            Epson.EpsonServer.Client.Write("SET|FEED|AIRSIDE|ON");
+            SelectedProject.EpsonServer.Client.Write("SET|FEED|AIRSIDE|ON");
         }
 
         private void __btblowsideoff_Click(object sender, EventArgs e) {
-            Epson.EpsonServer.Client.Write("SET|FEED|AIRSIDE|OFF");
+            SelectedProject.EpsonServer.Client.Write("SET|FEED|AIRSIDE|OFF");
         }
 
         private void __checkFreeJoint1_CheckedChanged(object sender, EventArgs e) {
             if (__checkFreeJoint1.Checked) {
-                Epson.EpsonServer.Client.Write("SET|JOINT|1|OFF");
+                SelectedProject.EpsonServer.Client.Write("SET|JOINT|1|OFF");
             } else {
-                Epson.EpsonServer.Client.Write("SET|JOINT|1|ON");
+                SelectedProject.EpsonServer.Client.Write("SET|JOINT|1|ON");
             }
         }
 
         private void __checkFreeJoint2_CheckedChanged(object sender, EventArgs e) {
             if (__checkFreeJoint2.Checked) {
-                Epson.EpsonServer.Client.Write("SET|JOINT|2|OFF");
+                SelectedProject.EpsonServer.Client.Write("SET|JOINT|2|OFF");
             } else {
-                Epson.EpsonServer.Client.Write("SET|JOINT|2|ON");
+                SelectedProject.EpsonServer.Client.Write("SET|JOINT|2|ON");
             }
         }
 
         private void __checkFreeJoint3_CheckedChanged(object sender, EventArgs e) {
             if (__checkFreeJoint3.Checked) {
-                Epson.EpsonServer.Client.Write("SET|JOINT|3|OFF");
+                SelectedProject.EpsonServer.Client.Write("SET|JOINT|3|OFF");
             } else {
-                Epson.EpsonServer.Client.Write("SET|JOINT|3|ON");
+                SelectedProject.EpsonServer.Client.Write("SET|JOINT|3|ON");
             }
         }
 
         private void __checkFreeJoint4_CheckedChanged(object sender, EventArgs e) {
             if (__checkFreeJoint4.Checked) {
-                Epson.EpsonServer.Client.Write("SET|JOINT|4|OFF");
+                SelectedProject.EpsonServer.Client.Write("SET|JOINT|4|OFF");
             } else {
-                Epson.EpsonServer.Client.Write("SET|JOINT|4|ON");
+                SelectedProject.EpsonServer.Client.Write("SET|JOINT|4|ON");
             }
         }
 
@@ -309,24 +309,24 @@ namespace EpsonModule {
         }
 
         private void __btReset_Click_1(object sender, EventArgs e) {
-            Epson.EpsonServer.Client.Write("SET|RESET");
+            SelectedProject.EpsonServer.Client.Write("SET|RESET");
         }
 
         private void __palletept1_SelectedIndexChanged(object sender, EventArgs e) {
             if (__palletept1.Text!="") {
-                Epson.Pallete.Point1 = __palletept1.Text;
+                SelectedProject.Pallete.Point1 = __palletept1.Text;
             }
         }
 
         private void __palletept3_SelectedIndexChanged(object sender, EventArgs e) {
             if (__palletept3.Text != "") {
-                Epson.Pallete.Point3 = __palletept3.Text;
+                SelectedProject.Pallete.Point3 = __palletept3.Text;
             }
         }
 
         private void __palletept2_SelectedIndexChanged(object sender, EventArgs e) {
             if (__palletept2.Text != "") {
-                Epson.Pallete.Point2 = __palletept2.Text;
+                SelectedProject.Pallete.Point2 = __palletept2.Text;
             }
         }
 
@@ -334,7 +334,7 @@ namespace EpsonModule {
         private void __palletenr_SelectedIndexChanged(object sender, EventArgs e) {
             try {
                 if (__palletenr.Text != "") {
-                    Epson.Pallete.PalleteNumber = int.Parse(__palletenr.Text);
+                    SelectedProject.Pallete.PalleteNumber = int.Parse(__palletenr.Text);
                 }
             } catch (Exception exp) {
 
@@ -345,7 +345,7 @@ namespace EpsonModule {
         private void __pallete_lines_SelectedIndexChanged(object sender, EventArgs e) {
             try {
                 if (__pallete_lines.Text != "") {
-                    Epson.Pallete.PalleteLines = int.Parse(__pallete_lines.Text);
+                    SelectedProject.Pallete.PalleteLines = int.Parse(__pallete_lines.Text);
                 }
             } catch (Exception exp) {
 
@@ -356,7 +356,7 @@ namespace EpsonModule {
         private void __pallete_col_SelectedIndexChanged(object sender, EventArgs e) {
             try {
                 if (__pallete_col.Text != "") {
-                    Epson.Pallete.PalleteCol = int.Parse(__pallete_col.Text);
+                    SelectedProject.Pallete.PalleteCol = int.Parse(__pallete_col.Text);
                 }
             } catch (Exception exp) {
 
@@ -365,14 +365,14 @@ namespace EpsonModule {
         }
 
         private void __btsetPallete_Click(object sender, EventArgs e) {
-            Epson.EpsonServer.Client.Write("SET|PALLET|" + 
-                Epson.Pallete.PalleteNumber.ToString() + 
-                "|" + Epson.Pallete.Point1 + "|"+
-                "|" + Epson.Pallete.Point2 + "|"+
-                "|" + Epson.Pallete.Point3 + "|"+
-                "|" + Epson.Pallete.Point4 + "|" +               
-                "|" + Epson.Pallete.PalleteCol+ "|"+
-                "|" + Epson.Pallete.PalleteLines
+            SelectedProject.EpsonServer.Client.Write("SET|PALLET|" + 
+                SelectedProject.Pallete.PalleteNumber.ToString() + 
+                "|" + SelectedProject.Pallete.Point1 + "|"+
+                "|" + SelectedProject.Pallete.Point2 + "|"+
+                "|" + SelectedProject.Pallete.Point3 + "|"+
+                "|" + SelectedProject.Pallete.Point4 + "|" +               
+                "|" + SelectedProject.Pallete.PalleteCol+ "|"+
+                "|" + SelectedProject.Pallete.PalleteLines
                 );
         }
 
@@ -402,7 +402,7 @@ namespace EpsonModule {
 
         private void __btgotopallete_Click(object sender, EventArgs e) {
             try {
-                Epson.EpsonServer.Client.Write("JUMPTOPALLET|" +__goCol.Text+"|" +__goLine.Text);
+                SelectedProject.EpsonServer.Client.Write("JUMPTOPALLET|" +__goCol.Text+"|" +__goLine.Text);
             } catch (Exception exp) {
 
                 log.Error(exp);
@@ -410,25 +410,25 @@ namespace EpsonModule {
         }
 
         private void __btLightRingsOn_Click(object sender, EventArgs e) {
-            Epson.EpsonServer.Client.Write("SET|LIGHT|1|ON");
+            SelectedProject.EpsonServer.Client.Write("SET|LIGHT|1|ON");
         }
 
         private void __btLightRingsOff_Click(object sender, EventArgs e) {
-            Epson.EpsonServer.Client.Write("SET|LIGHT|1|OFF");
+            SelectedProject.EpsonServer.Client.Write("SET|LIGHT|1|OFF");
         }
 
         private void __checkFreeall_CheckedChanged(object sender, EventArgs e) {
             if (__checkFreeall.Checked) {
-                Epson.EpsonServer.Client.Write("SET|JOINT|ALL|OFF");
+                SelectedProject.EpsonServer.Client.Write("SET|JOINT|ALL|OFF");
             }
             else {
-                Epson.EpsonServer.Client.Write("SET|JOINT|ALL|ON");
+                SelectedProject.EpsonServer.Client.Write("SET|JOINT|ALL|ON");
             }
         }
 
         private void __palletept4_SelectedIndexChanged(object sender, EventArgs e) {
             if (__palletept4.Text != "") {
-                Epson.Pallete.Point4 = __palletept4.Text;
+                SelectedProject.Pallete.Point4 = __palletept4.Text;
             }
         }
 
@@ -439,13 +439,13 @@ namespace EpsonModule {
         }
 
         private void __btBypassOn_Click(object sender, EventArgs e) {
-            Epson.EpsonServer.Client.Write("SET|BYPASS|ON");
+            SelectedProject.EpsonServer.Client.Write("SET|BYPASS|ON");
             __btBypassOn.BackColor = Color.Red;
             __btBypassOff.BackColor = SystemColors.Control;
         }
 
         private void __btBypassOff_Click(object sender, EventArgs e) {
-            Epson.EpsonServer.Client.Write("SET|BYPASS|OFF");
+            SelectedProject.EpsonServer.Client.Write("SET|BYPASS|OFF");
             __btBypassOn.BackColor = SystemColors.Control;
             __btBypassOff.BackColor = Color.Red;
         }

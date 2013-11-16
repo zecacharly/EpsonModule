@@ -16,9 +16,10 @@ using KPPAutomationCore;
 namespace EpsonModule {
     public partial class EpsonMainForm : DockContent,IModuleForm {
 
-        EpsonProject Epson = null;
+        
         public EpsonMainForm() {
-            switch (EpsonProject.Language) {
+            Restart = false;
+            switch (LanguageSettings.Language) {
                 case LanguageName.Unk:
                     break;
                 case LanguageName.PT:
@@ -33,48 +34,10 @@ namespace EpsonModule {
                     break;
             }
             InitializeComponent();
-            this.CloseButtonVisible = false;
-            _EpsonConfigForm.CloseButtonVisible = false;
-            _EpsonStatusForm.CloseButtonVisible = false;
-
-
             
-
-            _EpsonConfigForm.__propertyGridEpson.SelectedObject = Epson;
-            if (Epson != null) {
-                Epson.EpsonServer.Connected += new IOModule.TCPServer.TcpServerEventDlgt(EpsonServer_Connected);
-                Epson.EpsonServer.Disconnected += new IOModule.TCPServer.TcpServerEventDlgt(EpsonServer_Disconnected);
-                Epson.EpsonServer.ServerClientMessage += new IOModule.TCPServer.TcpServerClientMessageEvent(EpsonServer_ServerClientMessage);
-                Epson.EpsonServer.StartListening();
-
-                Epson.EpsonAndroidServer.Connected += new IOModule.TCPServer.TcpServerEventDlgt(EpsonAndroidServer_Connected);
-                Epson.EpsonAndroidServer.Disconnected += new IOModule.TCPServer.TcpServerEventDlgt(EpsonAndroidServer_Disconnected);
-                Epson.EpsonAndroidServer.ServerClientMessage += new IOModule.TCPServer.TcpServerClientMessageEvent(EpsonAndroidServer_ServerClientMessage);
-                Epson.EpsonAndroidServer.StartListening();
-
-                Epson.OnEpsonStatusChanged += new EpsonProject.EpsonStatusChanged(Epson_OnEpsonStatusChanged);
-                _EpsonConfigForm.Epson = Epson;
-
-            }
         }
 
-        void __dockPanel1_ActivePaneChanged(object sender, EventArgs e) {
-            //try {
-            //    DockPane pane = __dockPanel1.ActivePane;
-            //    if (pane!=null) {
-            //        __dockPanel1.VerticalScroll.Maximum = pane.Height;
-            //        __dockPanel1.VerticalScroll.SmallChange = __dockPanel1.VerticalScroll.Maximum / 8;
-            //        __dockPanel1.VerticalScroll.LargeChange = __dockPanel1.VerticalScroll.Maximum / 4;
-
-            //    }
-
-            //} catch (Exception exp) {
-
-            //    log.Error(exp);
-            //}
-        }
-        
-
+       
         private static KPPLogger log = new KPPLogger(typeof(EpsonMainForm));
         private EpsonStatusForm _EpsonStatusForm = new EpsonStatusForm();
         private EpsonConfigForm _EpsonConfigForm = new EpsonConfigForm();
@@ -87,30 +50,30 @@ namespace EpsonModule {
                 if (Args[0]=="SET") {
                     if (Args[1] == "MANMODE") {
                           this.BeginInvoke((MethodInvoker)delegate {
-                              if (MessageBox.Show(this.GetResourceText("OpenVisionSystem.Resources.Language.Epson", "pedido_man_remota_txt"), this.GetResourceText("OpenVisionSystem.Resources.Language.Epson", "pedido_man_remota_cap"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes) {                              
-                                  Epson.EpsonAndroidServer.Client.Write("SET|MANMODE|OK");
+                              if (MessageBox.Show(this.GetResourceText("OpenVisionSystem.Resources.Language.Epson", "pedido_man_remota_txt"), this.GetResourceText("OpenVisionSystem.Resources.Language.Epson", "pedido_man_remota_cap"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes) {
+                                  ((EpsonProject)(EpsonSettings.SelectedProject)).EpsonAndroidServer.Client.Write("SET|MANMODE|OK");
                                   String ptsequence = "";
                                   foreach (String item in _EpsonConfigForm.__PointsList.Items) {
                                       ptsequence = ptsequence+"|" + item;
                                   }
-                                  Epson.EpsonAndroidServer.Client.Write("SET|POINTLIST|" + ptsequence);
+                                  ((EpsonProject)(EpsonSettings.SelectedProject)).EpsonAndroidServer.Client.Write("SET|POINTLIST|" + ptsequence);
                               }
                               else {
-                                  Epson.EpsonAndroidServer.Client.Write("SET|MANMODE|NOK");
+                                  ((EpsonProject)(EpsonSettings.SelectedProject)).EpsonAndroidServer.Client.Write("SET|MANMODE|NOK");
                               }
                           });
                     }
                     else if (Args[1]=="POINT") {
-                        if (Epson.EpsonServer.Client!=null) {
-                            Epson.EpsonServer.Client.Write("SAVECURREPOS|" + Args[2]);
+                        if (((EpsonProject)(EpsonSettings.SelectedProject)).EpsonServer.Client != null) {
+                            ((EpsonProject)(EpsonSettings.SelectedProject)).EpsonServer.Client.Write("SAVECURREPOS|" + Args[2]);
                         }
                         
                     }
                 }
                 else if (Args[0]=="JUMPTO") {
                      if (Args[1]=="POINT") {
-                        if (Epson.EpsonServer.Client!=null) {
-                            Epson.EpsonServer.Client.Write("JUMPTO|POINT|" + Args[2]);
+                         if (((EpsonProject)(EpsonSettings.SelectedProject)).EpsonServer.Client != null) {
+                             ((EpsonProject)(EpsonSettings.SelectedProject)).EpsonServer.Client.Write("JUMPTO|POINT|" + Args[2]);
                         }
                         
                     }
@@ -126,10 +89,10 @@ namespace EpsonModule {
         }
 
         void EpsonAndroidServer_Connected(object sender, IOModule.TCPServerEventArgs e) {
-            if (Epson.EpsonServer.Client!=null) {
-                Epson.EpsonAndroidServer.Client.Write("STATUS|CONNECTED");
+            if (((EpsonProject)(EpsonSettings.SelectedProject)).EpsonServer.Client != null) {
+                ((EpsonProject)(EpsonSettings.SelectedProject)).EpsonAndroidServer.Client.Write("STATUS|CONNECTED");
             } else {
-                Epson.EpsonAndroidServer.Client.Write("STATUS|NOTCONNECTED");
+                ((EpsonProject)(EpsonSettings.SelectedProject)).EpsonAndroidServer.Client.Write("STATUS|NOTCONNECTED");
             }
         }
 
@@ -151,13 +114,13 @@ namespace EpsonModule {
                         }
                         else if (Args[1] == "STARTED") {                            
                             this.BeginInvoke((MethodInvoker)delegate {
-                                Epson.Status = EpsonStatus.Started;
+                                ((EpsonProject)(EpsonSettings.SelectedProject)).Status = EpsonStatus.Started;
                                 __btStart.Enabled = false;
                                 __btStop.Enabled = true;
                                 update_progressbar(_EpsonStatusForm.__progressVisStatus, "", 0, SystemColors.InactiveCaption);
                                 String msg = this.GetResourceText("OpenVisionSystem.Resources.Language.Epson", "Operation_Started");
-                                if (Epson.EpsonAndroidServer.Client != null) {
-                                    Epson.EpsonAndroidServer.Client.Write("STATUS|RB|"+msg);
+                                if (((EpsonProject)(EpsonSettings.SelectedProject)).EpsonAndroidServer.Client != null) {
+                                    ((EpsonProject)(EpsonSettings.SelectedProject)).EpsonAndroidServer.Client.Write("STATUS|RB|" + msg);
                                 }
                                 update_progressbar(_EpsonStatusForm.__progressRBStatus, msg, 100, Color.DarkSeaGreen);
                                 m_ErrorSet = false;
@@ -167,14 +130,14 @@ namespace EpsonModule {
                         } else if (Args[1] == "STOPPED") {
                             
                             this.BeginInvoke((MethodInvoker)delegate {
-                                Epson.Status = EpsonStatus.Stopped;
+                                ((EpsonProject)(EpsonSettings.SelectedProject)).Status = EpsonStatus.Stopped;
                                 __btStart.Enabled = true;
                                 __timerParagem.Enabled = false;
                                 __btStop.Text = this.GetResourceText("OpenVisionSystem.Resources.Language.Epson", "__btStopStopped");
                                 __btStop.BackColor = SystemColors.Control;
                                 __btStop.Enabled = false;
-                                if (Epson.EpsonAndroidServer.Client != null) {
-                                    Epson.EpsonAndroidServer.Client.Write("STATUS|RB|" + __btStop.Text);
+                                if (((EpsonProject)(EpsonSettings.SelectedProject)).EpsonAndroidServer.Client != null) {
+                                    ((EpsonProject)(EpsonSettings.SelectedProject)).EpsonAndroidServer.Client.Write("STATUS|RB|" + __btStop.Text);
                                 }
                                 if (!m_ErrorSet ) {
                                     update_progressbar(_EpsonStatusForm.__progressRBStatus, this.GetResourceText("OpenVisionSystem.Resources.Language.Epson", "No_operation_running"), 100, SystemColors.InactiveCaption); 
@@ -185,8 +148,8 @@ namespace EpsonModule {
                             if (Args.Count() > 3) {
                                 if (!m_ErrorSet ) {
                                     String msg = this.GetResourceText("OpenVisionSystem.Resources.Language.Epson", Args[2]);
-                                    if (Epson.EpsonAndroidServer.Client != null) {
-                                        Epson.EpsonAndroidServer.Client.Write("STATUS|RB|" + msg);
+                                    if (((EpsonProject)(EpsonSettings.SelectedProject)).EpsonAndroidServer.Client != null) {
+                                        ((EpsonProject)(EpsonSettings.SelectedProject)).EpsonAndroidServer.Client.Write("STATUS|RB|" + msg);
                                     }
                                     update_progressbar(_EpsonStatusForm.__progressRBStatus, msg, int.Parse(Args[3]), Color.DarkSeaGreen); 
                                 }
@@ -231,7 +194,7 @@ namespace EpsonModule {
                             this.BeginInvoke((MethodInvoker)delegate {
                                 //_EpsonStatusForm.__btNewInsp.Enabled = true;
 
-                                Epson.Status = EpsonStatus.Maintenance;
+                                ((EpsonProject)(EpsonSettings.SelectedProject)).Status = EpsonStatus.Maintenance;
                             });
 
                         } else if (Args[1] == "WAITSTEP") {
@@ -260,15 +223,15 @@ namespace EpsonModule {
                             _EpsonConfigForm.__palletept2.Items.AddRange(newarray.ToArray());
                             _EpsonConfigForm.__palletept3.Items.AddRange(newarray.ToArray());
                             _EpsonConfigForm.__palletept4.Items.AddRange(newarray.ToArray());
-                            
 
-                            _EpsonConfigForm.__palletenr.SelectedIndex = _EpsonConfigForm.__palletenr.Items.IndexOf(Epson.Pallete.PalleteNumber.ToString());
-                            _EpsonConfigForm.__pallete_col.SelectedIndex = _EpsonConfigForm.__pallete_col.Items.IndexOf(Epson.Pallete.PalleteCol.ToString());
-                            _EpsonConfigForm.__pallete_lines.SelectedIndex = _EpsonConfigForm.__pallete_lines.Items.IndexOf(Epson.Pallete.PalleteLines.ToString());
-                            _EpsonConfigForm.__palletept1.SelectedIndex = _EpsonConfigForm.__palletept1.Items.IndexOf(Epson.Pallete.Point1);
-                            _EpsonConfigForm.__palletept2.SelectedIndex = _EpsonConfigForm.__palletept2.Items.IndexOf(Epson.Pallete.Point2);
-                            _EpsonConfigForm.__palletept3.SelectedIndex = _EpsonConfigForm.__palletept3.Items.IndexOf(Epson.Pallete.Point3);
-                            _EpsonConfigForm.__palletept4.SelectedIndex = _EpsonConfigForm.__palletept4.Items.IndexOf(Epson.Pallete.Point4);
+
+                            _EpsonConfigForm.__palletenr.SelectedIndex = _EpsonConfigForm.__palletenr.Items.IndexOf(((EpsonProject)(EpsonSettings.SelectedProject)).Pallete.PalleteNumber.ToString());
+                            _EpsonConfigForm.__pallete_col.SelectedIndex = _EpsonConfigForm.__pallete_col.Items.IndexOf(((EpsonProject)(EpsonSettings.SelectedProject)).Pallete.PalleteCol.ToString());
+                            _EpsonConfigForm.__pallete_lines.SelectedIndex = _EpsonConfigForm.__pallete_lines.Items.IndexOf(((EpsonProject)(EpsonSettings.SelectedProject)).Pallete.PalleteLines.ToString());
+                            _EpsonConfigForm.__palletept1.SelectedIndex = _EpsonConfigForm.__palletept1.Items.IndexOf(((EpsonProject)(EpsonSettings.SelectedProject)).Pallete.Point1);
+                            _EpsonConfigForm.__palletept2.SelectedIndex = _EpsonConfigForm.__palletept2.Items.IndexOf(((EpsonProject)(EpsonSettings.SelectedProject)).Pallete.Point2);
+                            _EpsonConfigForm.__palletept3.SelectedIndex = _EpsonConfigForm.__palletept3.Items.IndexOf(((EpsonProject)(EpsonSettings.SelectedProject)).Pallete.Point3);
+                            _EpsonConfigForm.__palletept4.SelectedIndex = _EpsonConfigForm.__palletept4.Items.IndexOf(((EpsonProject)(EpsonSettings.SelectedProject)).Pallete.Point4);
                             
                         });
 
@@ -281,12 +244,12 @@ namespace EpsonModule {
         }
 
         void __btok_Click(object sender, EventArgs e) {
-            Epson.EpsonServer.Client.Write("SET|NEWBLISTER");
+            ((EpsonProject)(EpsonSettings.SelectedProject)).EpsonServer.Client.Write("SET|NEWBLISTER");
         }
 
         void EpsonServer_Disconnected(object sender, IOModule.TCPServerEventArgs e) {
-            if (Epson.EpsonAndroidServer.Client != null) {
-                Epson.EpsonAndroidServer.Client.Write("STATUS|NOTCONNECTED");
+            if (((EpsonProject)(EpsonSettings.SelectedProject)).EpsonAndroidServer.Client != null) {
+                ((EpsonProject)(EpsonSettings.SelectedProject)).EpsonAndroidServer.Client.Write("STATUS|NOTCONNECTED");
             }
 
             update_progressbar(_EpsonStatusForm.__progressRBStatus,this.GetResourceText("OpenVisionSystem.Resources.Language.Epson", "Not_connected_to_robot"), 0, SystemColors.InactiveCaption);
@@ -299,8 +262,8 @@ namespace EpsonModule {
         }
 
         void EpsonServer_Connected(object sender, IOModule.TCPServerEventArgs e) {
-            if (Epson.EpsonAndroidServer.Client != null) {
-                Epson.EpsonAndroidServer.Client.Write("STATUS|CONNECTED");
+            if (((EpsonProject)(EpsonSettings.SelectedProject)).EpsonAndroidServer.Client != null) {
+                ((EpsonProject)(EpsonSettings.SelectedProject)).EpsonAndroidServer.Client.Write("STATUS|CONNECTED");
             }
             this.BeginInvoke((MethodInvoker)delegate {
                 __toolStripDisconnected.Visible = false;
@@ -371,7 +334,7 @@ namespace EpsonModule {
             }
         }
 
-        public EpsonModuleSettings EpsonSettings = null;
+        public EpsonSettings EpsonSettings = null;
         public EpsonProjects EpsonProjectsConfig = null;        
 
         //public string _epsonfile { get; set; }
@@ -388,14 +351,14 @@ namespace EpsonModule {
 
                 m_deserializeDockContent = new DeserializeDockContent(GetContentFromPersistString);
 
-             
+
                 Thread splashthread = new Thread(new ThreadStart(SplashScreen.ShowSplashScreen));
                 splashthread.IsBackground = true;
                 splashthread.Start();
                 //TODO splash screen
                 Thread.Sleep(100);
                 SplashScreen.UdpateStatusTextWithStatus("[" + ModuleName + "] - " + this.GetResourceText("SplashScreen_0"), TypeOfMessage.Success);
-                Thread.Sleep(100);                
+                Thread.Sleep(100);
 
 
                 this.Text = ModuleName;
@@ -403,10 +366,10 @@ namespace EpsonModule {
 
 
                 if (!File.Exists(epsonSettingsFile)) {
-                    EpsonModuleSettings.WriteConfiguration(new EpsonModuleSettings(), epsonSettingsFile);
+                    EpsonSettings.WriteConfiguration(new EpsonSettings(), epsonSettingsFile);
                 }
 
-                EpsonSettings = EpsonModuleSettings.ReadConfigurationFile(epsonSettingsFile);
+                EpsonSettings = EpsonSettings.ReadConfigurationFile(epsonSettingsFile);
                 EpsonSettings.BackupExtention = ".bkp";
                 EpsonSettings.BackupFilesToKeep = 5;
                 EpsonSettings.BackupFolderName = "Backup";
@@ -416,11 +379,13 @@ namespace EpsonModule {
                 if (File.Exists(EpsonSettings.DockFile))
                     try {
                         __dockPanel1.LoadFromXml(EpsonSettings.DockFile, m_deserializeDockContent);
-                    } catch (Exception exp) {
+                    }
+                    catch (Exception exp) {
 
                         __dockPanel1.SaveAsXml(EpsonSettings.DockFile);
 
-                    } else {
+                    }
+                else {
 
 
                 }
@@ -433,7 +398,7 @@ namespace EpsonModule {
                 }
 
 
-               
+
 
                 _EpsonStatusForm.__btNewInsp.Click += new EventHandler(__btNewInsp_Click);
 
@@ -447,43 +412,52 @@ namespace EpsonModule {
                 #endregion
 
 
-
-                SplashScreen.UdpateStatusTextWithStatus("[" + ModuleName + "] - " + this.GetResourceText("SplashScreen_2"), TypeOfMessage.Success);
-
-
-                SplashScreen.UdpateStatusTextWithStatus("[" + ModuleName + "] - " + this.GetResourceText("SplashScreen_3"), TypeOfMessage.Success);
-
                 LoadProjectsFromFile(EpsonSettings.ProjectFile);
 
 
-
-
-
-
-                #region Android
-                //AndroidServer = new TCPServerConnection();
-                //AndroidServer.Port = 9605;
-                //AndroidServer.StartOnLoad = false;
-                //AndroidServer.OnClientStateChanged += new TCPServerConnection.ClientStateChanged(AndroidServer_OnClientStateChanged);
-                //AndroidServer.OnClientMessage += new TCPServerConnection.ClientMessage(AndroidServer_OnClientMessage);
-                //AndroidServer.Start();
-                #endregion
-
-
-
-                AcessManagement.OnAcesslevelChanged +=new AcessManagement.AcesslevelChanged(AcessManagement_OnAcesslevelChanged);
+                AcessManagement.OnAcesslevelChanged += new AcessManagement.AcesslevelChanged(AcessManagement_OnAcesslevelChanged);
 
                 AcessManagement_OnAcesslevelChanged(AcessManagement.AcessLevel);
 
+                this.CloseButtonVisible = false;
+                _EpsonConfigForm.CloseButtonVisible = false;
+                _EpsonStatusForm.CloseButtonVisible = false;
 
-            } catch (Exception exp) {
-                log.Error(exp);
-                SplashScreen.UdpateStatusText(this.GetResourceText("SplashScreen_6"));
-                Thread.Sleep(500);
-                this.Show();
-                SplashScreen.CloseSplashScreen();
+
+
+
+                _EpsonConfigForm.__propertyGridEpson.SelectedObject = EpsonSettings.SelectedProject;
+                if (EpsonSettings.SelectedProject != null) {
+
+                    ((EpsonProject)(EpsonSettings.SelectedProject)).EpsonServer.Connected += new IOModule.TCPServer.TcpServerEventDlgt(EpsonServer_Connected);
+                    ((EpsonProject)(EpsonSettings.SelectedProject)).EpsonServer.Disconnected += new IOModule.TCPServer.TcpServerEventDlgt(EpsonServer_Disconnected);
+                    ((EpsonProject)(EpsonSettings.SelectedProject)).EpsonServer.ServerClientMessage += new IOModule.TCPServer.TcpServerClientMessageEvent(EpsonServer_ServerClientMessage);
+                    ((EpsonProject)(EpsonSettings.SelectedProject)).EpsonServer.StartListening();
+
+                    ((EpsonProject)(EpsonSettings.SelectedProject)).EpsonAndroidServer.Connected += new IOModule.TCPServer.TcpServerEventDlgt(EpsonAndroidServer_Connected);
+                    ((EpsonProject)(EpsonSettings.SelectedProject)).EpsonAndroidServer.Disconnected += new IOModule.TCPServer.TcpServerEventDlgt(EpsonAndroidServer_Disconnected);
+                    ((EpsonProject)(EpsonSettings.SelectedProject)).EpsonAndroidServer.ServerClientMessage += new IOModule.TCPServer.TcpServerClientMessageEvent(EpsonAndroidServer_ServerClientMessage);
+                    ((EpsonProject)(EpsonSettings.SelectedProject)).EpsonAndroidServer.StartListening();
+
+                    ((EpsonProject)(EpsonSettings.SelectedProject)).OnEpsonStatusChanged += new EpsonProject.EpsonStatusChanged(Epson_OnEpsonStatusChanged);
+                    _EpsonConfigForm.SelectedProject = ((EpsonProject)(EpsonSettings.SelectedProject));
+
+                }
+                SplashScreen.UdpateStatusText("[" + ModuleName + "] - " +this.GetResourceText("SplashScreen_3"));
+
 
             }
+            catch (Exception exp) {
+                log.Error(exp);
+
+                SplashScreen.UdpateStatusText(this.GetResourceText("[" + ModuleName + "] - " +"SplashScreen_4"));
+
+
+
+            }
+            Thread.Sleep(500);
+
+            SplashScreen.CloseSplashScreen();
         }
 
 
@@ -725,14 +699,14 @@ namespace EpsonModule {
         }
 
         void __btNewInsp_Click(object sender, EventArgs e) {
-            Epson.EpsonServer.Client.Write("NEWINSP|START");
+            ((EpsonProject)(EpsonSettings.SelectedProject)).EpsonServer.Client.Write("NEWINSP|START");
         }
 
         private void EpsonMainForm_FormClosing(object sender, FormClosingEventArgs e) {
             try {
 
-                if (File.Exists(_epsonfile)) {
-                    __dockPanel1.SaveAsXml(_epsonfile);    
+                if (File.Exists(EpsonSettings.DockFile)) {
+                    __dockPanel1.SaveAsXml(EpsonSettings.DockFile);    
                 }   
                 
                 
@@ -748,7 +722,7 @@ namespace EpsonModule {
                 __timerParagem.Enabled = false;
                 __btStop.Text = this.GetResourceText("OpenVisionSystem.Resources.Language.Epson", "__btStopStopped");
                 __btStop.BackColor = SystemColors.Control;
-                Epson.EpsonServer.Client.Write("SET|OPERATION|START");                
+                ((EpsonProject)(EpsonSettings.SelectedProject)).EpsonServer.Client.Write("SET|OPERATION|START");                
             } catch (Exception exp) {
 
                 log.Error(exp);
@@ -760,7 +734,7 @@ namespace EpsonModule {
                 __btStop.Enabled = false;
                 __btStop.Text=this.GetResourceText("OpenVisionSystem.Resources.Language.Epson", "__btStopStopping");
                 __timerParagem.Enabled = true;
-                Epson.EpsonServer.Client.Write("SET|OPERATION|STOP");
+                ((EpsonProject)(EpsonSettings.SelectedProject)).EpsonServer.Client.Write("SET|OPERATION|STOP");
             } catch (Exception exp) {
 
                 log.Error(exp);
@@ -779,5 +753,7 @@ namespace EpsonModule {
             }
         }
 
+
+        public bool Restart { get; set; }
     }
 }

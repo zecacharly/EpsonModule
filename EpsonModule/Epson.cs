@@ -10,14 +10,11 @@ using System.Threading;
 using KPP.Core.Debug;
 using System.IO;
 using KPPAutomationCore;
+using DejaVu;
 
 namespace EpsonModule {
 
-    public delegate void SelectedProjectChanged(EpsonProject ProjectSelected);
-
-    public enum LanguageName { Unk, PT, EN }
-   
-
+       
 
     public enum EpsonStatus { Stopped, Started, Maintenance }
 
@@ -111,7 +108,20 @@ namespace EpsonModule {
 
     public class EpsonProject:ModuleProject {
 
-        
+
+        private TCPServer m_EpsonAndroidServer;
+        [DisplayName("Epson Android Server")]
+        public TCPServer EpsonAndroidServer {
+            get { return m_EpsonAndroidServer; }
+            set { m_EpsonAndroidServer = value; }
+        }
+
+        private TCPServer m_EpsonServer;
+        [DisplayName("Epson TCP Server")]
+        public TCPServer EpsonServer {
+            get { return m_EpsonServer; }
+            set { m_EpsonServer = value; }
+        }
 
         private PalleteDefinition m_Pallete = new PalleteDefinition();
         [Browsable(false)]
@@ -150,28 +160,7 @@ namespace EpsonModule {
 
 
 
-        private static LanguageName _Language = LanguageName.PT;
-
-        public static LanguageName Language {
-            get { return _Language; }
-            set {
-                if (_Language != value) {
-                    _Language = value;
-                    switch (value) {
-                        case LanguageName.Unk:
-                            break;
-                        case LanguageName.PT:
-                            break;
-                        case LanguageName.EN:
-
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
-        }
-        
+      
 
         public EpsonProject() {
             Name = "Epson Project";
@@ -412,16 +401,16 @@ namespace EpsonModule {
 
 
 
-    public sealed class EpsonModuleSettings:ModuleSettings {
+    public sealed class EpsonSettings:ModuleSettings {
 
         
-        private KPPLogger log = new KPPLogger(typeof(EpsonModuleSettings));
+        private KPPLogger log = new KPPLogger(typeof(EpsonSettings));
 
       
         /// <summary>
         /// 
         /// </summary>
-        public EpsonModuleSettings() {
+        public EpsonSettings() {
             Name = "Epson Settings";
 
          
@@ -439,18 +428,19 @@ namespace EpsonModule {
         /// </summary>
         /// <param name="path">The path.</param>
         /// <returns></returns>
-        public static EpsonModuleSettings ReadConfigurationFile(string path) {
+        public static EpsonSettings ReadConfigurationFile(string path) {
             //log.Debug(String.Format("Load Xml file://{0}", path));
+            KPPLogger statlog = new KPPLogger(typeof(EpsonSettings));
             if (File.Exists(path)) {
-                EpsonModuleSettings result = null;
+                EpsonSettings result = null;
                 TextReader reader = null;
 
                 try {
-                    XmlSerializer serializer = new XmlSerializer(typeof(EpsonModuleSettings));
+                    XmlSerializer serializer = new XmlSerializer(typeof(EpsonSettings));
                     reader = new StreamReader(path);
 
 
-                    EpsonModuleSettings config = serializer.Deserialize(reader) as EpsonModuleSettings;
+                    EpsonSettings config = serializer.Deserialize(reader) as EpsonSettings;
              
                     config.FilePath= path;
 
@@ -458,7 +448,7 @@ namespace EpsonModule {
                    
                 }
                 catch (Exception exp) {
-                    log.Error(exp);
+                    statlog.Error(exp);
                 }
                 finally {
                     if (reader != null) {
@@ -476,15 +466,16 @@ namespace EpsonModule {
         /// <param name="childtype">The childtype.</param>
         /// <param name="xmlString">The XML string.</param>
         /// <returns></returns>
-        public static EpsonModuleSettings ReadConfigurationString(string xmlString) {
+        public static EpsonSettings ReadConfigurationString(string xmlString) {
+            KPPLogger statlog = new KPPLogger(typeof(EpsonSettings));
             try {
-                XmlSerializer serializer = new XmlSerializer(typeof(EpsonModuleSettings));
-                EpsonModuleSettings config = serializer.Deserialize(new StringReader(xmlString)) as EpsonModuleSettings;
+                XmlSerializer serializer = new XmlSerializer(typeof(EpsonSettings));
+                EpsonSettings config = serializer.Deserialize(new StringReader(xmlString)) as EpsonSettings;
 
                 return config;
             }
             catch (Exception exp) {
-                log.Error(exp);
+                statlog.Error(exp);
             }
             return null;
         }
@@ -528,7 +519,7 @@ namespace EpsonModule {
         /// </summary>
         /// <param name="config">The config.</param>
         /// <param name="path">The path.</param>
-        public static void WriteConfiguration(EpsonModuleSettings config, string path) {
+        public static void WriteConfiguration(EpsonSettings config, string path) {
             WriteConfiguration(config, path, S_BackupFolderName, S_BackupExtention, S_BackupFilesToKeep);
         }
 
@@ -537,7 +528,8 @@ namespace EpsonModule {
         /// </summary>
         /// <param name="config">The config.</param>
         /// <param name="path">The path.</param>
-        public static void WriteConfiguration(EpsonModuleSettings config, string path, string backupFolderName, String backupExtention, Int32 backupFilesToKeep) {
+        public static void WriteConfiguration(EpsonSettings config, string path, string backupFolderName, String backupExtention, Int32 backupFilesToKeep) {
+            KPPLogger statlog = new KPPLogger(typeof(EpsonSettings));
             if (File.Exists(path) && backupFilesToKeep > 0) {
                 //Do a file backup prior to overwrite
                 try {
@@ -588,7 +580,7 @@ namespace EpsonModule {
                 //log.Debug(String.Format("Write Xml file://{0}", path));
             }
             catch (Exception exp) {
-                log.Error("Error writing configuration. ", exp);
+                statlog.Error("Error writing configuration. ", exp);
            
                 Console.WriteLine(exp.ToString());
             }
@@ -599,7 +591,7 @@ namespace EpsonModule {
         /// </summary>
         /// <param name="config">The config.</param>
         /// <returns></returns>
-        public static String WriteConfigurationToString(EpsonModuleSettings config) {
+        public static String WriteConfigurationToString(EpsonSettings config) {
             try {
                 XmlSerializer serializer = new XmlSerializer(config.GetType());
                 StringWriter stOut = new StringWriter();

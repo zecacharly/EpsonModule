@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 using System.Threading;
 using System.Globalization;
+using KPPAutomationCore;
 
 
 namespace EpsonModule {
@@ -16,10 +17,10 @@ namespace EpsonModule {
 
 
 
-        public EpsonProject epsonmodule=null;
+        public EpsonProject SelectedProject=null;
 
         public EpsonStatusForm() {
-            switch (EpsonProject.Language) {
+            switch (LanguageSettings.Language) {
                 case LanguageName.Unk:
                     break;
                 case LanguageName.PT:
