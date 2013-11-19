@@ -41,7 +41,8 @@ namespace EpsonModule {
         private static KPPLogger log = new KPPLogger(typeof(EpsonMainForm));
         private EpsonStatusForm _EpsonStatusForm = new EpsonStatusForm();
         private EpsonConfigForm _EpsonConfigForm = new EpsonConfigForm();
-
+        private ProjectOptionsForm _ProjectOptionsForm = new ProjectOptionsForm(typeof(EpsonProject));
+        private ConfigurationsForm _ConfigurationsForm = new ConfigurationsForm(typeof(EpsonProjects));
    
 
         void EpsonAndroidServer_ServerClientMessage(object sender, IOModule.TCPServerClientEventArgs e) {
@@ -755,5 +756,74 @@ namespace EpsonModule {
 
 
         public bool Restart { get; set; }
+
+        private void __toolSaveproj_Click(object sender, EventArgs e) {
+
+        }
+
+        private void OpenToolStripMenuItem_Click(object sender, EventArgs e) {
+
+        }
+
+        private void __toolCloseProj_Click(object sender, EventArgs e) {
+
+        }
+
+        private void __toolConfig_Click(object sender, EventArgs e) {
+
+        }
+
+        private void __toolExit_Click(object sender, EventArgs e) {
+
+        }
+
+        private void __btExit_Click(object sender, EventArgs e) {
+            Restart = true;
+            CloseCurrentConfiguration(false);
+            this.Close();
+        }
+
+        private void __btConfig_Click(object sender, EventArgs e) {
+            try {
+                _ConfigurationsForm.ReloadFile = "";
+                _ConfigurationsForm.ShowDialog();
+                if (_ConfigurationsForm.ReloadFile != "") {
+                    DialogResult dlgResult = MessageBox.Show(this.GetResourceText("Load_new_project_file") + " : " + Path.GetFileName(_ConfigurationsForm.ReloadFile) + "?", this.GetResourceText("Confirm_option"), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (dlgResult == System.Windows.Forms.DialogResult.Yes) {
+                        LoadProjectsFromFile(_ConfigurationsForm.ReloadFile);
+                    }
+                }
+            } catch (Exception exp) {
+
+                log.Error(exp);
+            }
+        }
+
+
+        private void __btSaveproj_Click(object sender, EventArgs e) {
+            try {
+                SaveCurrentConfiguration();
+
+            } catch (Exception exp) {
+
+                log.Error(exp);
+            }
+        }
+
+        private void SaveCurrentConfiguration() {
+            if (EpsonProjectsConfig != null) {
+
+                EpsonProjectsConfig.WriteConfigurationFile();
+
+            }
+        }
+
+        private void __btload_Click(object sender, EventArgs e) {
+            _ProjectOptionsForm.Show();
+        }
+
+        private void __btCloseProj_Click(object sender, EventArgs e) {
+            CloseCurrentConfiguration(false);
+        }
     }
 }

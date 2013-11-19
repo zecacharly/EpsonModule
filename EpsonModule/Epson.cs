@@ -405,14 +405,15 @@ namespace EpsonModule {
 
         
         private KPPLogger log = new KPPLogger(typeof(EpsonSettings));
-
+        [XmlAttribute]
+        public override String ProjectFileExtension { get; set; }
       
         /// <summary>
         /// 
         /// </summary>
         public EpsonSettings() {
             Name = "Epson Settings";
-
+            ProjectFileExtension = ".EpsonProjects";
          
 
 

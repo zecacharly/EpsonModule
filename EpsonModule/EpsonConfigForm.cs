@@ -26,9 +26,9 @@ namespace EpsonModule {
             set {
                 if (value!=m_SelectedProject) {
                     m_SelectedProject = value;
-                    
-                    
 
+
+                    __propertyGridEpson.SelectedObject = value;
                     if (m_SelectedProject!=null) {
                         m_SelectedProject.OnEpsonStatusChanged += new EpsonProject.EpsonStatusChanged(m_epsonmodule_OnEpsonStatusChanged);
                     }

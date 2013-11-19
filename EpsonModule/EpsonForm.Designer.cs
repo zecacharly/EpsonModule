@@ -41,6 +41,13 @@
             WeifenLuo.WinFormsUI.Docking.TabGradient tabGradient6 = new WeifenLuo.WinFormsUI.Docking.TabGradient();
             WeifenLuo.WinFormsUI.Docking.TabGradient tabGradient7 = new WeifenLuo.WinFormsUI.Docking.TabGradient();
             this.@__MenuBar = new System.Windows.Forms.ToolStrip();
+            this.toolStripDropDownButton2 = new System.Windows.Forms.ToolStripDropDownButton();
+            this.@__btSaveproj = new System.Windows.Forms.ToolStripMenuItem();
+            this.@__btload = new System.Windows.Forms.ToolStripMenuItem();
+            this.@__btCloseProj = new System.Windows.Forms.ToolStripMenuItem();
+            this.@__btConfig = new System.Windows.Forms.ToolStripMenuItem();
+            this.@__btExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.@__toolStripDisconnected = new System.Windows.Forms.ToolStripButton();
             this.@__toolStripConnected = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -56,6 +63,8 @@
             // 
             resources.ApplyResources(this.@__MenuBar, "__MenuBar");
             this.@__MenuBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripDropDownButton2,
+            this.toolStripSeparator2,
             this.@__toolStripDisconnected,
             this.@__toolStripConnected,
             this.toolStripSeparator1,
@@ -65,6 +74,54 @@
             this.@__MenuBar.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.@__MenuBar.Name = "__MenuBar";
             this.@__MenuBar.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            // 
+            // toolStripDropDownButton2
+            // 
+            resources.ApplyResources(this.toolStripDropDownButton2, "toolStripDropDownButton2");
+            this.toolStripDropDownButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripDropDownButton2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.@__btSaveproj,
+            this.@__btload,
+            this.@__btCloseProj,
+            this.@__btConfig,
+            this.@__btExit});
+            this.toolStripDropDownButton2.Name = "toolStripDropDownButton2";
+            this.toolStripDropDownButton2.TextDirection = System.Windows.Forms.ToolStripTextDirection.Horizontal;
+            // 
+            // __btSaveproj
+            // 
+            resources.ApplyResources(this.@__btSaveproj, "__btSaveproj");
+            this.@__btSaveproj.Name = "__btSaveproj";
+            this.@__btSaveproj.Click += new System.EventHandler(this.@__btSaveproj_Click);
+            // 
+            // __btload
+            // 
+            resources.ApplyResources(this.@__btload, "__btload");
+            this.@__btload.Name = "__btload";
+            this.@__btload.Click += new System.EventHandler(this.@__btload_Click);
+            // 
+            // __btCloseProj
+            // 
+            resources.ApplyResources(this.@__btCloseProj, "__btCloseProj");
+            this.@__btCloseProj.Name = "__btCloseProj";
+            this.@__btCloseProj.Click += new System.EventHandler(this.@__btCloseProj_Click);
+            // 
+            // __btConfig
+            // 
+            resources.ApplyResources(this.@__btConfig, "__btConfig");
+            this.@__btConfig.Name = "__btConfig";
+            this.@__btConfig.Click += new System.EventHandler(this.@__btConfig_Click);
+            // 
+            // __btExit
+            // 
+            resources.ApplyResources(this.@__btExit, "__btExit");
+            this.@__btExit.Name = "__btExit";
+            this.@__btExit.Click += new System.EventHandler(this.@__btExit_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            resources.ApplyResources(this.toolStripSeparator2, "toolStripSeparator2");
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
             // 
             // __toolStripDisconnected
             // 
@@ -78,8 +135,8 @@
             // 
             // toolStripSeparator1
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
             resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
             // 
             // __btStart
             // 
@@ -95,13 +152,13 @@
             // 
             // toolStripSeparator4
             // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
             resources.ApplyResources(this.toolStripSeparator4, "toolStripSeparator4");
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
             // 
             // __dockPanel1
             // 
-            this.@__dockPanel1.ActiveAutoHideContent = null;
             resources.ApplyResources(this.@__dockPanel1, "__dockPanel1");
+            this.@__dockPanel1.ActiveAutoHideContent = null;
             this.@__dockPanel1.DockBackColor = System.Drawing.SystemColors.AppWorkspace;
             this.@__dockPanel1.DockBottomPortion = 150D;
             this.@__dockPanel1.DockLeftPortion = 200D;
@@ -188,5 +245,12 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton __toolStripConnected;
         private System.Windows.Forms.Timer __timerParagem;
+        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton2;
+        private System.Windows.Forms.ToolStripMenuItem __btSaveproj;
+        private System.Windows.Forms.ToolStripMenuItem __btload;
+        private System.Windows.Forms.ToolStripMenuItem __btConfig;
+        private System.Windows.Forms.ToolStripMenuItem __btExit;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem __btCloseProj;
     }
 }
