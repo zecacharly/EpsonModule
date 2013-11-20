@@ -404,7 +404,7 @@ namespace EpsonModule {
     public sealed class EpsonSettings:ModuleSettings {
 
         
-        private KPPLogger log = new KPPLogger(typeof(EpsonSettings));
+        private static KPPLogger log = new KPPLogger(typeof(EpsonSettings));
 
       
         /// <summary>
