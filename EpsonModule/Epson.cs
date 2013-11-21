@@ -429,8 +429,7 @@ namespace EpsonModule {
         /// <param name="path">The path.</param>
         /// <returns></returns>
         public static EpsonSettings ReadConfigurationFile(string path) {
-            //log.Debug(String.Format("Load Xml file://{0}", path));
-            KPPLogger statlog = new KPPLogger(typeof(EpsonSettings));
+            //log.Debug(String.Format("Load Xml file://{0}", path));            
             if (File.Exists(path)) {
                 EpsonSettings result = null;
                 TextReader reader = null;
@@ -448,7 +447,7 @@ namespace EpsonModule {
                    
                 }
                 catch (Exception exp) {
-                    statlog.Error(exp);
+                    log.Error(exp);
                 }
                 finally {
                     if (reader != null) {
@@ -467,7 +466,7 @@ namespace EpsonModule {
         /// <param name="xmlString">The XML string.</param>
         /// <returns></returns>
         public static EpsonSettings ReadConfigurationString(string xmlString) {
-            KPPLogger statlog = new KPPLogger(typeof(EpsonSettings));
+            
             try {
                 XmlSerializer serializer = new XmlSerializer(typeof(EpsonSettings));
                 EpsonSettings config = serializer.Deserialize(new StringReader(xmlString)) as EpsonSettings;
@@ -475,7 +474,7 @@ namespace EpsonModule {
                 return config;
             }
             catch (Exception exp) {
-                statlog.Error(exp);
+                log.Error(exp);
             }
             return null;
         }
@@ -522,14 +521,15 @@ namespace EpsonModule {
         public static void WriteConfiguration(EpsonSettings config, string path) {
             WriteConfiguration(config, path, S_BackupFolderName, S_BackupExtention, S_BackupFilesToKeep);
         }
-
+        
+        
         /// <summary>
         /// Writes the configuration.
         /// </summary>
         /// <param name="config">The config.</param>
         /// <param name="path">The path.</param>
         public static void WriteConfiguration(EpsonSettings config, string path, string backupFolderName, String backupExtention, Int32 backupFilesToKeep) {
-            KPPLogger statlog = new KPPLogger(typeof(EpsonSettings));
+            
             if (File.Exists(path) && backupFilesToKeep > 0) {
                 //Do a file backup prior to overwrite
                 try {
@@ -580,7 +580,7 @@ namespace EpsonModule {
                 //log.Debug(String.Format("Write Xml file://{0}", path));
             }
             catch (Exception exp) {
-                statlog.Error("Error writing configuration. ", exp);
+                log.Error("Error writing configuration. ", exp);
            
                 Console.WriteLine(exp.ToString());
             }

@@ -39,6 +39,7 @@ namespace EpsonModule {
 
        
         private static KPPLogger log = new KPPLogger(typeof(EpsonMainForm));
+
         private EpsonStatusForm _EpsonStatusForm = new EpsonStatusForm();
         private EpsonConfigForm _EpsonConfigForm = new EpsonConfigForm();
 
@@ -342,9 +343,7 @@ namespace EpsonModule {
         private String ModuleName;
 
         public void InitModule(String moduleName, String epsonSettingsFile) {
-            ModuleName = moduleName;
-            log = new KPPLogger(typeof(EpsonMainForm), name: ModuleName);
-
+            ModuleName = moduleName;          
 
             try {
 
